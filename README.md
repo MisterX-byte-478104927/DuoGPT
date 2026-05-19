@@ -58,6 +58,22 @@ Dacă întâmpini probleme în timpul utilizării, verifică următoarele soluț
 
 4. **Textul capturat este incomplet sau greșit:** Sistemul folosește selectoare DOM dinamice. Dacă Duolingo schimbă structura clasei unui exercițiu, extensia va folosi o metodă de fallback (ultimele 300 de caractere din pagină). Poți raporta structurile noi deschizând un Issue în acest repo.
 
+## 🤝 Cum poți contribui (Contributing)
+Contribuțiile de orice fel sunt mai mult decât binevenite! Dacă vrei să îmbunătățești codul sau să adaugi funcționalități noi:
+
+1. Fă un **Fork** acestui depozit.
+
+2. Creează un Branch nou pentru modificările tale:
+git checkout -b feature/exploit-nou
+
+3. Fă un Commit cu schimbările aduse:
+git commit -m "Adăugat un nou selector de urgență pentru layout"
+
+4. Împinge Branch-ul în repo-ul tău:
+git push origin feature/exploit-nou
+
+5. Deschide un **Pull Request** către acest depozit și descrie pe scurt ce ai optimizat.
+
 ## 🔒 Securitate și Confidențialitate
 **Stocare Locală Securizată**: Cheia ta API și preferințele de limbă sunt stocate local pe dispozitivul tău prin intermediul chrome.storage.local. Nimic nu se trimite către servere terțe.
 
