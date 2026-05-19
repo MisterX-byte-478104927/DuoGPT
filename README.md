@@ -1,82 +1,82 @@
 # DuoGPT
 🦉 DuoGPT is an advanced, ultra-optimized Chrome Extension (Manifest V3) that acts as an AI copilot for Duolingo. Features a native 3D UI button, isolated floating chat, smart toggle controls, dynamic 50+ language support, and context-aware grammar explanations powered directly by Gemini 2.5 Flash. 🚀
 
-## ✨ Caracteristici Principale
+## ✨ Key Features
 
-* **⚡ Integrare Nativă 3D:** Butonul `EXPLAIN` împrumută identitatea vizuală exactă a butoanelor Duolingo (fonturi rotunjite, margini groase tridimensionale, efecte fluide la apăsare).
-* **🧠 Motor de Inteligență Artificială:** Conectare directă prin Google AI Studio API la modelul de ultimă generație **Gemini 2.5 Flash**, oferind răspunsuri concise, structurate și extrem de rapide.
-* **🌍 Poliglot din Dinamică:** Meniu Popup inteligent care populează dinamic peste **50 de limbi universale** de traducere (de la Română și Engleză până la dialecte complexe), sortate alfabetic.
-* **🛡️ Izolare Vizuală Completă:** Interfața de chat rulează într-un mediu sandbox total izolat. Butoanele `>>` și `<<` folosesc un `zIndex` maxim absolut (`2147483647`) pentru a rămâne mereu accesibile fără să strice layout-ul lecțiilor.
-* **📝 Formatare Avansată (Markdown & Tabele):** Explicațiile AI-ului sunt stilizate elegant cu accente verzi Duolingo (`#58cc02`), cuvinte-cheie evidențiate în blocuri de cod roșii și tabele gramaticale optimizate pentru citire rapidă.
-* **🚀 Anti-Spam & Debounce Engine:** Protecție nativă asincronă care blochează click-urile multiple în timp ce AI-ul procesează răspunsul (`THINKING...`).
+* **⚡ Native 3D Integration:** The `EXPLAIN` button perfectly matches Duolingo's official visual identity (rounded fonts, thick 3D borders, and fluid hover/active states).
+* **🧠 High-Performance AI Engine:** Direct connection via Google AI Studio API to the cutting-edge **Gemini 2.5 Flash** model, delivering concise, highly structured, and blazing-fast explanations.
+* **🌍 Dynamic Polyglot Support:** An intelligent settings popup that dynamically populates over **50 universal target languages** (alphabetically sorted) for localized explanations.
+* **🛡️ Complete Visual Isolation:** The chat interface runs completely sandboxed. The custom `>>` and `<<` toggle buttons leverage an absolute maximum `zIndex` (`2147483647`) to stay accessible without breaking the web layout.
+* **📝 Advanced Formatting (Markdown & Tables):** AI responses are beautifully rendered using custom Duolingo green accents (`#58cc02`), inline key-phrases highlighted in red code-blocks, and fully responsive grammar tables.
+* **🚀 Anti-Spam & Debounce Control:** Native asynchronous state lock prevents double-submission while the AI is computing requests (`THINKING...`).
 
 
-## 🛠️ Instalare Pas cu Pas (Mod Dezvoltator)
+## 🛠️ Step-by-Step Installation (Developer Mode)
 
-Deoarece extensia este un instrument autonom avansat, aceasta se instalează direct din surse:
+Since this extension is an autonomous developer tool, it is loaded directly from source:
 
-1. **Descarcă Proiectul:** Clonează acest depozit sau descarcă arhiva ZIP și extrage-o într-un folder pe PC-ul tău.
+1. **Download the Project:** Clone this repository or download the ZIP archive and extract it to a local folder on your PC.
 
-2. **Accesează Extensiile în Chrome:** Deschide browserul Google Chrome și navighează la adresa: chrome://extensions/
+2. **Access Chrome Extensions:** Open Google Chrome and navigate to: `chrome://extensions/`
 
-3. **Activează Developer Mode:** În colțul din dreapta-sus al paginii, comută comutatorul "Developer mode" (Mod dezvoltator) pe poziția activă.
+3. **Enable Developer Mode:** In the top-right corner of the extensions page, toggle the "Developer mode" switch to ON.
 
-4. **Încarcă Extensia**: Apasă pe butonul "Load unpacked" (Încarcă extensie despachetată) din colțul stânga-sus.
+4. **Load the Extension:** Click the "Load unpacked" button in the top-left corner.
 
-5. **Selectează Folderul**: Alege folderul rădăcină în care ai extras fișierele proiectului (cel care conține manifest.json).
+5. **Select Folder:** Choose the root directory of the extracted project (the folder containing `manifest.json`).
 
-## ⚙️ Configurarea Inițială
-1. Obține o cheie API gratuită direct din Google AI Studio.
+## ⚙️ Initial Configuration
+1. Obtain a free API key directly from Google AI Studio.
 
-2. Dă click pe iconița DuoGPT din bara de extensii a browserului tău pentru a deschide meniul de setări.
+2. Click the DuoGPT icon in your browser's extension bar to open the settings menu.
 
-3. Lipește cheia ta API (AIzaSy...) în câmpul dedicat.
+3. Paste your API key (`AIzaSy...`) into the designated field.
 
-4. Selectează limba în care dorești să primești explicațiile din lista dinamică (ex: Română).
+4. Select your preferred explanation language from the dynamic dropdown list (e.g., English, Română, Español).
 
-5. Apasă pe *SAVE SETTINGS*. Statusul va afișa ✓ Saved settings, iar butonul va fi securizat timp de 2 secunde pentru a preveni salvarea accidentală.
+5. Click *SAVE SETTINGS*. The status will display `✓ Saved settings`, and the button will briefly lock for 2 seconds to prevent accidental double-saving.
 
-## 🎮 Cum se Folosește
-1. Intră pe Duolingo și pornește orice lecție sau exercițiu.
+## 🎮 How to Use
+1. Go to Duolingo and launch any active lesson or exercise.
 
-2. În momentul în care apare o întrebare sau un exercițiu text, extensia va injecta automat butonul albastru EXPLAIN exact lângă butonul oficial de verificare.
+2. When a text question or challenge appears, the extension automatically injects the blue `EXPLAIN` button right next to the native "Check" / "Continue" button.
 
-3. Apasă pe EXPLAIN. Butonul își va schimba starea în THINKING..., iar panoul inteligent se va deschide fluid în partea dreaptă.
+3. Click `EXPLAIN`. The button state updates to `THINKING...`, and the side panel smoothly reveals itself on the right.
 
-4. Gemini analizează exercițiul capturat din DOM și îți livrează structura gramaticală, greșelile comune și traducerea exactă.
+4. Gemini inspects the captured challenge DOM data, generating structural grammar analysis, common mistakes, and exact translations.
 
-5. Controlul Ecranului: Dacă ai nevoie de ecran complet, apasă pe butonul rotund >> din colțul stânga-sus al panoului. Panoul dispare instantaneu și lasă locul unui tab discret << lipit de marginea ecranului pentru restaurare instantanee, fără a pierde istoricul conversației.
+5. **Screen Management:** Need a full view of the lesson? Click the circular `>>` button on the top-left of the panel. The panel instantly collapses, leaving a low-profile green `<<` tab anchored to the screen edge for rapid retrieval without losing chat history.
 
-## 🔍 Depanare (Troubleshooting)
-Dacă întâmpini probleme în timpul utilizării, verifică următoarele soluții rapide:
+## 🔍 Troubleshooting
+If you encounter issues during use, check these quick fixes:
 
-1. **Butonul EXPLAIN nu apare pe pagină:** Duolingo își actualizează frecvent interfața. Asigură-te că ești într-o lecție activă (nu pe pagina principală de profil). Dacă tot nu apare, deschide consola browserului (F12 -> tab-ul Console) și verifică dacă există erori. Un simplu Refresh (F5) rezolvă de obicei reinițializarea scriptului.
+1. **The EXPLAIN button is missing:** Duolingo updates its DOM classes frequently. Ensure you are inside an active learning session (not the main profile dashboard). If it fails to render, open the browser console (F12 -> Console tab) to look for exceptions. A simple page refresh (F5) usually re-initializes the script hooks successfully.
 
-2. **Panoul afișează ⚠️ Lipsește cheia API din Popup!:** Apasă pe iconița extensiei din bara de Chrome, reintroduce cheia ta generată în Google AI Studio și apasă SAVE SETTINGS. Asigură-te că nu ai spații goale la începutul sau la sfârșitul cheii.
+2. **The panel displays ⚠️ Missing API Key in Popup!:** Open the extension popup from the Chrome toolbar, re-paste your Google AI Studio token, and click SAVE SETTINGS. Ensure no leading or trailing whitespaces are present.
 
-3. **Panoul rămâne blocat pe textul Thinking...:** Verifică conexiunea la internet sau dacă ai atins limitele de rată (rate limits) ale contului tău gratuit din Google AI Studio. De asemenea, asigură-te că extensia nu este blocată de un ad-blocker agresiv sau de un firewall local.
+3. **The widget hangs indefinitely on Thinking...:** Verify your network connection or check if you hit the free tier rate limits on Google AI Studio. Additionally, confirm that aggressive ad-blockers or local network firewalls aren't trapping the API endpoints.
 
-4. **Textul capturat este incomplet sau greșit:** Sistemul folosește selectoare DOM dinamice. Dacă Duolingo schimbă structura clasei unui exercițiu, extensia va folosi o metodă de fallback (ultimele 300 de caractere din pagină). Poți raporta structurile noi deschizând un Issue în acest repo.
+4. **Captured challenge text is corrupted or incomplete:** The extension utilizes fallback algorithms (grabbing the last 300 characters of the readable body text) if Duolingo alters its challenge container classes. Feel free to open an Issue ticket if selectors require an emergency patch.
 
-## 🤝 Cum poți contribui (Contributing)
-Contribuțiile de orice fel sunt mai mult decât binevenite! Dacă vrei să îmbunătățești codul sau să adaugi funcționalități noi:
+## 🤝 Contributing
+Contributions of any kind are highly encouraged! To improve the codebase or deploy new features:
 
-1. Fă un **Fork** acestui depozit.
+1. **Fork** this repository.
 
-2. Creează un Branch nou pentru modificările tale:
-git checkout -b feature/exploit-nou
+2. Create your feature branch:
+`git checkout -b feature/exploit-nou`
 
-3. Fă un Commit cu schimbările aduse:
-git commit -m "Adăugat un nou selector de urgență pentru layout"
+3. Commit your changes:
+`git commit -m "Fix: added new dynamic DOM container fallback"`
 
-4. Împinge Branch-ul în repo-ul tău:
-git push origin feature/exploit-nou
+4. Push to your branch:
+`git push origin feature/exploit-nou`
 
-5. Deschide un **Pull Request** către acest depozit și descrie pe scurt ce ai optimizat.
+5. Open a **Pull Request** explaining your optimization.
 
-## 🔒 Securitate și Confidențialitate
-**Stocare Locală Securizată**: Cheia ta API și preferințele de limbă sunt stocate local pe dispozitivul tău prin intermediul chrome.storage.local. Nimic nu se trimite către servere terțe.
+## 🔒 Security & Privacy
+**Secure Local Storage**: Your API key and language choices are stored strictly within your browser via `chrome.storage.local`. No data ever hits third-party tracking infrastructure.
 
-**Conexiune Directă**: Cererile AI sunt efectuate direct de pe mașina ta către endpoint-ul oficial Google Generative Language API, garantând latență minimă și confidențialitate maximă.
+**Direct Handshakes**: AI inference payload traffic flows directly from your local client to the official Google Generative Language API endpoint, keeping latency low and isolation high.
 
-**Fără Analytics**: Extensia nu colectează date de utilizare, log-uri de navigare sau telemetrie.
+**Zero Telemetry**: The extension collects absolutely zero analytics, click tracking, or user telemetry logs.
