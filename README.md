@@ -52,11 +52,11 @@ Dacă întâmpini probleme în timpul utilizării, verifică următoarele soluț
 
 1. **Butonul EXPLAIN nu apare pe pagină:** Duolingo își actualizează frecvent interfața. Asigură-te că ești într-o lecție activă (nu pe pagina principală de profil). Dacă tot nu apare, deschide consola browserului (F12 -> tab-ul Console) și verifică dacă există erori. Un simplu Refresh (F5) rezolvă de obicei reinițializarea scriptului.
 
-Panoul afișează ⚠️ Lipsește cheia API din Popup!: Apasă pe iconița extensiei din bara de Chrome, reintroduce cheia ta generată în Google AI Studio și apasă SAVE SETTINGS. Asigură-te că nu ai spații goale la începutul sau la sfârșitul cheii.
+2. **Panoul afișează ⚠️ Lipsește cheia API din Popup!:** Apasă pe iconița extensiei din bara de Chrome, reintroduce cheia ta generată în Google AI Studio și apasă SAVE SETTINGS. Asigură-te că nu ai spații goale la începutul sau la sfârșitul cheii.
 
-Panoul rămâne blocat pe textul Thinking...: Verifică conexiunea la internet sau dacă ai atins limitele de rată (rate limits) ale contului tău gratuit din Google AI Studio. De asemenea, asigură-te că extensia nu este blocată de un ad-blocker agresiv sau de un firewall local.
+3. **Panoul rămâne blocat pe textul Thinking...:** Verifică conexiunea la internet sau dacă ai atins limitele de rată (rate limits) ale contului tău gratuit din Google AI Studio. De asemenea, asigură-te că extensia nu este blocată de un ad-blocker agresiv sau de un firewall local.
 
-Textul capturat este incomplet sau greșit: Sistemul folosește selectoare DOM dinamice. Dacă Duolingo schimbă structura clasei unui exercițiu, extensia va folosi o metodă de fallback (ultimele 300 de caractere din pagină). Poți raporta structurile noi deschizând un Issue în acest repo.
+4. **Textul capturat este incomplet sau greșit:** Sistemul folosește selectoare DOM dinamice. Dacă Duolingo schimbă structura clasei unui exercițiu, extensia va folosi o metodă de fallback (ultimele 300 de caractere din pagină). Poți raporta structurile noi deschizând un Issue în acest repo.
 
 ## 🔒 Securitate și Confidențialitate
 **Stocare Locală Securizată**: Cheia ta API și preferințele de limbă sunt stocate local pe dispozitivul tău prin intermediul chrome.storage.local. Nimic nu se trimite către servere terțe.
