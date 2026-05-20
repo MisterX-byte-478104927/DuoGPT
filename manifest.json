@@ -1,6 +1,6 @@
 ﻿{
   "manifest_version": 3,
-  "name": "DuoGPT Alfa",
+  "name": "DuoGPT Beta",
   "version": "2.0.1",
   "description": "AI Help for Duolingo lessons",
   "permissions": ["storage", "activeTab", "scripting"],
