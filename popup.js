@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusDiv = document.getElementById('status');
   const versionCheckDiv = document.getElementById('version-check');
 
-  const currentVersion = "1.2.2"; // Versiunea curentă a extensiei
+  const currentVersion = "2.0.5"; // Versiunea curentă a extensiei
 
   // 1. Populăm limbile universale
   const languages = [
@@ -33,8 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Verificarea Versiunii prin algoritmul SemVer definit de tine
   async function checkExtensionVersion() {
     try {
-      // De înlocuit cu link-ul tău RAW real din repository-ul GitHub
-      const repoManifestUrl = 'https://raw.githubusercontent.com/MisterX-byte-478104927/DuoGPT/main/manifest.json';
+      const repoManifestUrl = 'https://raw.githubusercontent.com/MisterX-byte-478104927/DuoGPT/refs/heads/main/manifest.json';
       const response = await fetch(repoManifestUrl);
       if (!response.ok) throw new Error();
       
