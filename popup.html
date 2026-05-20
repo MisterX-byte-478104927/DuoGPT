@@ -1,92 +1,41 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <style>
-    body { 
-      width: 280px; 
-      padding: 15px; 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background-color: #ffffff; 
-      margin: 0;
-    }
-    h3 { 
-      color: #58cc02; 
-      margin-top: 0; 
-      margin-bottom: 15px;
-      border-bottom: 2px solid #58cc02; 
-      padding-bottom: 8px; 
-      font-size: 16px;
-    }
-    .field-group {
-      margin-bottom: 12px;
-    }
-    label { 
-      font-size: 12px; 
-      font-weight: bold; 
-      color: #4b4b4b; 
-      display: block; 
-      margin-bottom: 6px; 
-    }
-    input[type="password"], select { 
-      width: 100%; 
-      padding: 10px; 
-      border: 2px solid #e5e5e5; 
-      border-radius: 12px; 
-      background: #fff; 
-      box-sizing: border-box;
-      font-size: 13px;
-      color: #3c3c3c;
-    }
-    input[type="password"]:focus, select:focus {
-      border-color: #58cc02;
-      outline: none;
-    }
-    button { 
-      width: 100%; 
-      background: #58cc02; 
-      color: white; 
-      border: none; 
-      border-bottom: 4px solid #46a302;
-      padding: 12px; 
-      border-radius: 12px; 
-      cursor: pointer; 
-      font-weight: bold;
-      font-size: 14px;
-      text-transform: uppercase;
-      margin-top: 5px;
-      transition: background 0.2s;
-    }
-    button:active {
-      border-bottom-width: 0px;
-      margin-top: 9px;
-      margin-bottom: 4px;
-    }
-    #status { 
-      font-size: 12px; 
-      color: #2ecc71; 
-      font-weight: bold; 
-      margin-top: 10px; 
-      text-align: center; 
-      height: 15px; 
-    }
-  </style>
+  <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <h3>⚙️ DuoGPT v1.2.2 Settings</h3>
+  <h3>⚙️ DuoGPT Beta Settings</h3>
+  <div id="version-check">🔄 Checking version...</div>
   
   <div class="field-group">
     <label for="apiKey">Google AI Studio API Key:</label>
     <input type="password" id="apiKey" placeholder="AIzaSy...">
   </div>
+
+  <div class="field-group">
+    <label for="geminiModel">Gemini Model:</label>
+    <select id="geminiModel">
+      <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fast)</option>
+      <option value="gemini-2.5-pro">Gemini 2.5 Pro (Deep Analysis)</option>
+    </select>
+  </div>
   
   <div class="field-group">
     <label for="userLang">Explanation Language:</label>
-    <select id="userLang">
-      </select>
+    <select id="userLang"></select>
   </div>
 
-  <button id="saveBtn">Save Settings</button>
+  <div class="toggle-group">
+    <label for="aiWrongAnswers">Use AI on wrong answers</label>
+    <input type="checkbox" id="aiWrongAnswers">
+  </div>
+
+  <button id="saveBtn" class="btn-duo btn-green">Save Settings</button>
+  
+  <a id="githubBtn" href="https://github.com/MisterX-byte-478104927/DuoGPT" target="_blank" class="btn-duo btn-blue">View on GitHub</a>
+  <button id="donateBtn" class="btn-duo btn-orange" disabled>Donate Crypto (Soon)</button>
+
   <div id="status"></div>
 
   <script src="popup.js"></script>
