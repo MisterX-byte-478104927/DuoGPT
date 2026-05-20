@@ -1,7 +1,7 @@
 # DuoGPT Alfa v1.2.2 by Mister X
 🦉 DuoGPT is an advanced, ultra-optimized Chrome Extension (Manifest V3) that acts as an AI copilot for Duolingo. Features a native 3D UI button, isolated floating chat, smart toggle controls, dynamic 50+ language support, and context-aware grammar explanations powered directly by Gemini 2.5 Flash. 🚀
 
-## ✨ Key Features
+## ✨ Alfa Edition: Key Features
 
 * **⚡ Native 3D Integration:** The `EXPLAIN` button perfectly matches Duolingo's official visual identity (rounded fonts, thick 3D borders, and fluid hover/active states).
 * **🧠 High-Performance AI Engine:** Direct connection via Google AI Studio API to the cutting-edge **Gemini 2.5 Flash** model, delivering concise, highly structured, and blazing-fast explanations.
