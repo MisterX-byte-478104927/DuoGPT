@@ -1,11 +1,30 @@
-// DuoGPT Beta v2.0.1 by Mister X - Injection Core
-console.log("DuoGPT Beta v2.0.1 by Mister X - Active Lockdown Engine Loaded");
+// DuoGPT Beta v2.0.5 by Mister X - STABLE REPAIR
+console.log("DuoGPT Beta v2.0.5 - Clean Core Running");
 
 let isWaiting = false;
 let lockdownActive = false;
-let lockdownTimer = null;
+let blockTimeoutActive = false; // Flag simplu boolean, fără timere complicate
 
-// 1. Funcție care creează butonul discret de redeschidere "<<"
+// 1. INJECTARE CSS INTELIGENT
+function injecteazaStilLockdown() {
+    if (document.getElementById('duogpt-lockdown-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'duogpt-lockdown-styles';
+    style.innerHTML = `
+        body.duogpt-lockdown [data-test="player-next"],
+        body.duogpt-lockdown footer button,
+        body.duogpt-lockdown button:has(span) {
+            pointer-events: none !important;
+            opacity: 0.3 !important;
+            cursor: not-allowed !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+injecteazaStilLockdown();
+
+// 2. Funcție pentru deschiderea panoului
 function creeazaButonRedeschidere() {
     if (document.getElementById('duogpt-open-btn')) return;
 
@@ -44,7 +63,7 @@ function creeazaButonRedeschidere() {
     document.body.appendChild(openBtn);
 }
 
-// 2. Gestionarea Side-Panelului Iframe
+// 3. Gestionarea Iframe
 function toggleSidePanel() {
     let panel = document.getElementById('duogpt-frame');
     let closeBtn = document.getElementById('duogpt-close-btn');
@@ -117,26 +136,25 @@ function toggleSidePanel() {
     document.body.appendChild(closeBtn);
 }
 
-// 3. Funcția principală care execută apelul AI
+// 4. SCRAPING STABIL ALFA ALGORITHM
 function executaExplain() {
     if (isWaiting) return;
 
     const btn = document.getElementById('btn-explica');
     isWaiting = true; 
+
     if (btn) {
         btn.innerText = 'THINKING...';
         btn.style.opacity = "0.7";
     }
 
-    // Algoritm de scraping robust (Beta) - evită clasele dinamice obfuscate
-    const challengeContainer = document.querySelector('[data-test*="challenge"]') || document.querySelector('main article') || document.querySelector('main');
-    let textCapturat = "";
+    const zonaChallenge = document.querySelector('[data-test^="challenge"]') 
+                           || document.querySelector('._3_AmG') 
+                           || document.querySelector('main');
 
-    if (challengeContainer) {
-        const clone = challengeContainer.cloneNode(true);
-        const ignora = clone.querySelectorAll('button, [aria-hidden="true"], #btn-explica, #duogpt-frame');
-        ignora.forEach(el => el.remove());
-        textCapturat = clone.innerText.replace(/EXPLAIN/g, "").trim();
+    let textCapturat = "";
+    if (zonaChallenge) {
+        textCapturat = zonaChallenge.innerText.replace(/EXPLAIN/g, "").replace(/THINKING\.\.\./g, "").trim();
     }
 
     if (textCapturat.length < 2) {
@@ -145,17 +163,23 @@ function executaExplain() {
 
     toggleSidePanel();
 
+    // HACK: Pornim numărătoarea inversă pentru deblocare DOAR acum, pentru că utilizatorul a cerut ajutorul!
+    setTimeout(() => {
+        document.body.classList.remove('duogpt-lockdown');
+        lockdownActive = false;
+        console.log("[DuoGPT Core] Cele 5 secunde de lectură au trecut. Butonul CONTINUE este acum liber!");
+    }, 5000);
+
     setTimeout(() => {
         chrome.runtime.sendMessage({ 
             type: "ASK_AI", 
-            context: `Exercițiul actual: ${textCapturat}` 
+            context: `Exercițiul actual (cerință și opțiuni): ${textCapturat}` 
         });
     }, 400);
 }
 
-// 4. Injectarea Butonului EXPLAIN și Sistemul de Lockdown (Mecanica Diabolică)
+// 5. INJECTARE ȘI VERIFICARE LOCKDOWN
 function adaugaButonSiVerificaLockdown() {
-    // Căutăm butonul nativ Duolingo
     const butoane = document.querySelectorAll('button');
     let btnDuo = null;
     for (let b of butoane) {
@@ -168,7 +192,7 @@ function adaugaButonSiVerificaLockdown() {
 
     if (!btnDuo) return;
 
-    // Injectăm butonul EXPLAIN dacă nu există
+    // Injectare buton EXPLAIN
     if (!document.getElementById('btn-explica')) {
         const btn = document.createElement('button');
         btn.id = 'btn-explica';
@@ -197,73 +221,52 @@ function adaugaButonSiVerificaLockdown() {
         btnDuo.parentNode.insertBefore(btn, btnDuo);
     }
 
-    // VERIFICARE BLOCARE (Lockdown Engine pentru erori)
+    // GESTIONARE LOCKDOWN STRATEGICĂ
     chrome.storage.local.get(['aiWrongAnswers'], (data) => {
         if (!data.aiWrongAnswers) {
-            // Dacă opțiunea e dezactivată, ne asigurăm că totul e deblocat normal
-            if (lockdownActive) deblocheazaSistemul(btnDuo);
+            document.body.classList.remove('duogpt-lockdown');
+            lockdownActive = false;
             return;
         }
 
-        // Detectăm dacă a apărut caseta roșie de eroare a lui Duolingo
-        const hasError = document.querySelector('[data-test*="blame-incorrect"]') || document.querySelector('._3_AmG'); 
+        const hasError = document.querySelector('[data-test*="blame-incorrect"]') 
+                        || document.getElementById('blame-incorrect')
+                        || document.querySelector('._3_AmG'); 
         
-        if (hasError && !lockdownActive && !isWaiting) {
-            console.log("[DuoGPT Core] S-a detectat o greșeală! Inițiem faza de Lockdown.");
-            lockdownActive = true;
-            
-            // Înghețăm butonul nativ Continue (îl facem gri și inactiv)
-            btnDuo.disabled = true;
-            btnDuo.style.backgroundColor = "#e5e5e5";
-            btnDuo.style.borderBottomColor = "#ccc";
-            btnDuo.style.color = "#afafaf";
-            btnDuo.style.cursor = "not-allowed";
+        if (isWaiting) return; 
 
-            // Pornește cronometrul de siguranță de 5 secunde pentru deblocare automată
-            if (lockdownTimer) clearTimeout(lockdownTimer);
-            lockdownTimer = setTimeout(() => {
-                deblocheazaSistemul(btnDuo);
-            }, 5000);
-        } 
-        // Resetăm starea dacă eroarea a dispărut din pagină (utilizatorul a trecut mai departe)
-        else if (!hasError && lockdownActive && !isWaiting) {
+        if (hasError) {
+            // Dacă e eroare și nu suntem deja în lockdown, activăm clasa pe BODY și o lăsăm acolo!
+            if (!lockdownActive && !blockTimeoutActive) {
+                lockdownActive = true;
+                blockTimeoutActive = true; // Flag-ul ăsta ne asigură că nu blocăm din nou după cele 5 secunde pe același ecran roșu
+                document.body.classList.add('duogpt-lockdown');
+                console.log("[DuoGPT Core] Lockdown activat. Se așteaptă interacțiunea cu EXPLAIN.");
+            }
+        } else {
+            // Când ecranul nu mai e roșu (s-a trecut la următorul exercițiu), curățăm toate flag-urile pentru runda următoare
+            document.body.classList.remove('duogpt-lockdown');
             lockdownActive = false;
+            blockTimeoutActive = false;
         }
     });
 }
 
-function deblocheazaSistemul(btnDuo) {
-    if (!lockdownActive) return;
-    console.log("[DuoGPT Core] Cele 5 secunde au trecut. Se restabilesc controalele.");
-    lockdownActive = false;
-    if (btnDuo) {
-        btnDuo.disabled = false;
-        btnDuo.style.backgroundColor = "#58cc02"; // Reset în verdele nativ
-        btnDuo.style.borderBottomColor = "#46a302";
-        btnDuo.style.color = "#ffffff";
-        btnDuo.style.cursor = "pointer";
-    }
-}
-
-// 5. Interceptarea evenimentelor globale de tastatură (Deturnarea tastei Enter)
+// 6. ADĂUGARE ASCULTĂTOR TASTĂ ENTER
 window.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         if (lockdownActive) {
-            // Stopăm complet acțiunea nativă Duolingo (care ar fi dat Skip/Continue)
             e.preventDefault();
             e.stopPropagation();
-            console.log("[DuoGPT Lockdown] Tasta Enter a fost deturnată! Forțăm execuția AI.");
-            
-            // Rulăm AI-ul în loc de Continue
+            console.log("[DuoGPT Core] Enter interceptat! Pornim AI.");
             executaExplain();
         }
     }
-}, true); // Folosim 'true' pentru capturing-phase, ca să prindem evenimentul înaintea scripturilor Duolingo
+}, true);
 
-// Scanăm DOM-ul în fiecare secundă pentru butoane și stări
 setInterval(adaugaButonSiVerificaLockdown, 1000);
 
-// 6. Comunicarea asincronă cu Iframe-ul și resetarea stărilor globale
+// 7. Răspuns AI + Debounce reset
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const iframe = document.getElementById('duogpt-frame');
     const btnExplica = document.getElementById('btn-explica');
