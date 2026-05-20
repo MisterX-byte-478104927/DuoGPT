@@ -1,0 +1,140 @@
+/* popup.css - DuoGPT Beta UI Theme */
+
+body { 
+  width: 290px; 
+  padding: 15px; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  background-color: #ffffff; 
+  margin: 0;
+}
+
+h3 { 
+  color: #58cc02; 
+  margin-top: 0; 
+  margin-bottom: 5px;
+  border-bottom: 2px solid #58cc02; 
+  padding-bottom: 8px; 
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Containerul inteligent pentru SemVer */
+#version-check {
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #afafaf;
+}
+
+.field-group {
+  margin-bottom: 12px;
+}
+
+/* Grupul special pentru comutatorul Use AI */
+.toggle-group {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-top: 15px; 
+  margin-bottom: 15px;
+  padding: 8px 0;
+  border-top: 1px dashed #e5e5e5;
+  border-bottom: 1px dashed #e5e5e5;
+}
+
+label { 
+  font-size: 12px; 
+  font-weight: bold; 
+  color: #4b4b4b; 
+  display: block; 
+  margin-bottom: 6px; 
+}
+
+.toggle-group label {
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+input[type="password"], select { 
+  width: 100%; 
+  padding: 10px; 
+  border: 2px solid #e5e5e5; 
+  border-radius: 12px; 
+  background: #fff; 
+  box-sizing: border-box;
+  font-size: 13px;
+  color: #3c3c3c;
+}
+
+input[type="password"]:focus, select:focus {
+  border-color: #58cc02;
+  outline: none;
+}
+
+/* Customizare checkbox în verde Duolingo */
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #58cc02;
+}
+
+/* Clasa de bază pentru butoanele 3D plate stil Duolingo */
+.btn-duo {
+  width: 100%; 
+  color: white; 
+  border: none; 
+  border-radius: 12px; 
+  cursor: pointer; 
+  font-weight: bold;
+  font-size: 13px;
+  text-transform: uppercase;
+  margin-top: 8px;
+  padding: 10px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: filter 0.2s;
+}
+
+.btn-duo:hover {
+  filter: brightness(1.05);
+}
+
+.btn-duo:active {
+  border-bottom-width: 0px;
+  margin-top: 12px;
+  margin-bottom: 0px;
+}
+
+/* Culorile specifice butoanelor */
+.btn-green {
+  background: #58cc02; 
+  border-bottom: 4px solid #46a302;
+  padding: 12px;
+  font-size: 14px;
+}
+.btn-green:active { margin-top: 12px; margin-bottom: 4px; }
+
+.btn-blue {
+  background: #1cb0f6;
+  border-bottom: 4px solid #1899d6;
+}
+
+.btn-orange {
+  background: #ff9600;
+  border-bottom: 4px solid #e07b00;
+  opacity: 0.6; /* Subliniem că e "coming soon" */
+  cursor: not-allowed;
+}
+
+#status { 
+  font-size: 12px; 
+  color: #2ecc71; 
+  font-weight: bold; 
+  margin-top: 10px; 
+  text-align: center; 
+  height: 15px; 
+}
