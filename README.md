@@ -18,12 +18,15 @@
   3. **👍/👎 Feedback System** — Rate responses to train and refine local context prompts.
   4. **🔄 Regenerate Button** — Re-roll the AI output on the fly for the same exercise context.
   5. **🚨 Report Button** — Streamline prompt failures and bugs directly to a dedicated Discord Webhook.
-  
+
+* **💬 More AI robots available** — Adding a list in the popup with several Gemini models
+* **📝 Native Support** — Introducing this extension in the Chrome Web Store so you no longer need to install/update manually
+* **📷 Adjusting design** — To make the extension to look more professional
 * **🚀 More Functionalities** coming soon!
 
 ## 🛠️ Step-by-Step Installation (Developer Mode)
 
-Since this extension is an autonomous developer tool, it is loaded directly from source:
+Until the extension is uploaded to Chrome Web Store, please download it from this oficial repository and upload it manually to Chrome:
 
 1. **Download the Project:** Clone this repository or download the ZIP archive and extract it to a local folder on your PC.
 
@@ -56,6 +59,8 @@ Since this extension is an autonomous developer tool, it is loaded directly from
 4. Gemini inspects the captured challenge DOM data, generating structural grammar analysis, common mistakes, and exact translations.
 
 5. **Screen Management:** Need a full view of the lesson? Click the circular `>>` button on the top-left of the panel. The panel instantly collapses, leaving a low-profile green `<<` tab anchored to the screen edge for rapid retrieval without losing chat history.
+
+6. You cand also send massages **manually** using the text box in the side panel with the chat for quick explications
 
 ## 🔍 Troubleshooting
 If you encounter issues during use, check these quick fixes:
