@@ -40,10 +40,43 @@ function appendMessage(role, content, modelName = "") {
     copyBtn.className = "action-btn";
     copyBtn.innerHTML = "📋 Copy";
     copyBtn.onclick = () => {
-      navigator.clipboard.writeText(content).then(() => {
+      // Încercăm prima dată metoda modernă nativă
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(content)
+          .then(() => afiseazaSuccesCopy())
+          .catch(() => executafallbackCopy(content));
+      } else {
+        executafallbackCopy(content);
+      }
+    
+      // Funcție internă pentru fallback (Hacker Style)
+      function executafallbackCopy(textToCopy) {
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        // Îl poziționăm în afara ecranului ca să fie invizibil
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          afiseazaSuccesCopy();
+        } catch (err) {
+          console.error("[DuoGPT] Fallback-ul de copy a eșuat:", err);
+          copyBtn.innerHTML = "❌ Failed";
+        }
+        
+        document.body.removeChild(textArea);
+      }
+
+      function afiseazaSuccesCopy() {
         copyBtn.innerHTML = "✅ Copied!";
         setTimeout(() => copyBtn.innerHTML = "📋 Copy", 2000);
-      });
+      }
     };
     actionsBar.appendChild(copyBtn);
 
