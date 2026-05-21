@@ -1,15 +1,17 @@
-﻿// sidepanel.js - Logica de control pentru interfața de chat
-
+// sidepanel.js - DuoGPT Beta v2.3.0 - Chat Evolution Module by Mister X
 const chatContainer = document.getElementById('chat-container');
 const userQueryInput = document.getElementById('userQuery');
 const sendBtn = document.getElementById('sendBtn');
 
+let ultimulContextCapturat = ""; // Păstrăm contextul pentru funcția de Re-roll
+
 /**
- * Adaugă un mesaj în interfață
+ * Adaugă un mesaj în interfață și atașează butoanele interactive pentru AI
  */
 function appendMessage(role, content, modelName = "") {
   const msgDiv = document.createElement('div');
   msgDiv.className = `msg ${role}`;
+  msgDiv.style.marginBottom = "15px";
 
   let htmlContent;
   try {
@@ -18,12 +20,134 @@ function appendMessage(role, content, modelName = "") {
     htmlContent = content.replace(/\n/g, '<br>');
   }
 
-  msgDiv.innerHTML = `
-    <div class="content">${htmlContent}</div>
-    ${modelName ? `<div style="font-size: 9px; opacity: 0.5; margin-top: 5px; text-align: right;">Model: ${modelName}</div>` : ""}
-  `;
+  // Injectăm textul de bază al mesajului
+  msgDiv.innerHTML = `<div class="content">${htmlContent}</div>`;
 
-  // Eliminăm indicatorul de încărcare dacă există înainte de a pune mesajul nou
+  // Dacă mesajul vine de la AI, îi construim bara de unelte inteligentă
+  if (role === "ai") {
+    // 1. Label-ul pentru modelul folosit
+    const metaDiv = document.createElement("div");
+    metaDiv.style.cssText = "font-size: 9px; opacity: 0.5; margin-top: 5px; text-align: right;";
+    metaDiv.innerText = `Model: ${modelName || "Gemini AI"}`;
+    msgDiv.appendChild(metaDiv);
+
+    // 2. Creare Bară Acțiuni
+    const actionsBar = document.createElement("div");
+    actionsBar.className = "ai-actions";
+
+    // --- BUTONUL COPY (📋) ---
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "action-btn";
+    copyBtn.innerHTML = "📋 Copy";
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(content).then(() => {
+        copyBtn.innerHTML = "✅ Copied!";
+        setTimeout(() => copyBtn.innerHTML = "📋 Copy", 2000);
+      });
+    };
+    actionsBar.appendChild(copyBtn);
+
+    // --- BUTONUL TEXT-TO-SPEECH (🔊) ---
+    const ttsBtn = document.createElement("button");
+    ttsBtn.className = "action-btn";
+    ttsBtn.innerHTML = "🔊 Listen";
+    ttsBtn.onclick = () => {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        ttsBtn.innerHTML = "🔊 Listen";
+        return;
+      }
+      ttsBtn.innerHTML = "🛑 Stop";
+      const utterance = new SpeechSynthesisUtterance(content.replace(/[*#`]/g, ""));
+      
+      chrome.storage.local.get(["userLang"], (data) => {
+        if (data.userLang === "Română") utterance.lang = "ro-RO";
+        else if (data.userLang === "English") utterance.lang = "en-US";
+        
+        utterance.onend = () => { ttsBtn.innerHTML = "🔊 Listen"; };
+        window.speechSynthesis.speak(utterance);
+      });
+    };
+    actionsBar.appendChild(ttsBtn);
+
+    // --- SISTEM FEEDBACK (👍/👎) ---
+    const thumbsUp = document.createElement("button");
+    thumbsUp.className = "action-btn";
+    thumbsUp.innerHTML = "👍";
+    const thumbsDown = document.createElement("button");
+    thumbsDown.className = "action-btn";
+    thumbsDown.innerHTML = "👎";
+
+    thumbsUp.onclick = () => {
+      thumbsUp.classList.toggle("active-up");
+      thumbsDown.classList.remove("active-down");
+    };
+    thumbsDown.onclick = () => {
+      thumbsDown.classList.toggle("active-down");
+      thumbsUp.classList.remove("active-up");
+    };
+    actionsBar.appendChild(thumbsUp);
+    actionsBar.appendChild(thumbsDown);
+
+    // --- BUTONUL REGENERATE / RE-ROLL (🔄) ---
+    const regenBtn = document.createElement("button");
+    regenBtn.className = "action-btn";
+    regenBtn.innerHTML = "🔄 Re-roll";
+    regenBtn.onclick = () => {
+      regenBtn.innerHTML = "⏳ Rolling...";
+      regenBtn.disabled = true;
+      showThinking();
+      chrome.runtime.sendMessage({ 
+        type: "ASK_AI", 
+        context: ultimulContextCapturat || content 
+      });
+    };
+    actionsBar.appendChild(regenBtn);
+
+    // --- REPORT BUG DISCORD (🚨) ---
+    const reportBtn = document.createElement("button");
+    reportBtn.className = "action-btn btn-report";
+    reportBtn.innerHTML = "🚨 Report Bug";
+    reportBtn.onclick = () => {
+      reportBtn.innerHTML = "Sending...";
+      reportBtn.disabled = true;
+      
+      const discordWebhookUrl = "https://discord.com/api/webhooks/AICI_PUI_ID_UL_TAU_DE_WEBHOOK";
+      
+      const payload = {
+        embeds: [{
+          title: "🚨 DuoGPT Beta - Prompt Failure Report",
+          color: 16711680,
+          fields: [
+            { name: "Model utilizat", value: modelName || "Gemini AI", inline: true },
+            { name: "Versiune Extensie", value: "2.3.0 (Beta)", inline: true },
+            { name: "Prompt trimis (Exercițiu)", value: `\`\`\`${ultimulContextCapturat || "Nespecificat"}\`\`\`` },
+            { name: "Răspuns AI defectuos", value: `\`\`\`${content.slice(0, 500)}...\`\`\`` }
+          ],
+          footer: { text: "Mister X Bug Tracker System" }
+        }]
+      };
+
+      fetch(discordWebhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        reportBtn.innerHTML = "🚀 Sent!";
+        reportBtn.style.borderColor = "#58cc02";
+      })
+      .catch(() => {
+        reportBtn.innerHTML = "❌ Failed";
+        reportBtn.disabled = false;
+      });
+    };
+    actionsBar.appendChild(reportBtn);
+
+    msgDiv.appendChild(actionsBar);
+  }
+
+  // Eliminăm indicatorul de încărcare înainte de a pune noul mesaj
   const indicator = document.getElementById('thinking-indicator');
   if (indicator) indicator.remove();
 
@@ -31,22 +155,32 @@ function appendMessage(role, content, modelName = "") {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// 0. Singurul ascultător necesar pentru primirea răspunsurilor AI în iframe
+// Ascultător pentru primirea răspunsurilor AI în iframe via window.postMessage
 window.addEventListener("message", (event) => {
-    const message = event.data;
-    if (message.type === "AI_RES") {
-        appendMessage("ai", message.content, message.model);
-    }
+  const message = event.data;
+  if (message.type === "AI_RES") {
+    appendMessage("ai", message.content, message.model);
+  }
 });
 
-// 1. Trimiterea manuală a mesajelor din input-ul de jos
+// Ascultător pentru mesaje primite prin runtime (asigură-te că prindem răspunsul indiferent de canal)
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type === "AI_RES") {
+    appendMessage("ai", message.content, message.model);
+  }
+  // Salvăm contextul curent când content.js trimite un exercițiu nou prin ASK_AI
+  if (message.type === "ASK_AI" || message.context) {
+    if (message.context) ultimulContextCapturat = message.context;
+  }
+});
+
+// Trimiterea manuală a mesajelor din input-ul de jos
 function handleManualSend() {
   const text = userQueryInput.value.trim();
   if (!text) return;
 
+  ultimulContextCapturat = text; // Salvăm textul manual ca fiind ultimul context valid
   appendMessage("user", text);
-  
-  // Afișăm un indicator vizual rapid până vine răspunsul
   showThinking();
 
   chrome.runtime.sendMessage({
@@ -58,13 +192,13 @@ function handleManualSend() {
 }
 
 function showThinking() {
-    if (document.getElementById('thinking-indicator')) return;
-    const thinkingDiv = document.createElement('div');
-    thinkingDiv.id = "thinking-indicator";
-    thinkingDiv.className = "msg ai";
-    thinkingDiv.innerText = "🤖 Thinking...";
-    chatContainer.appendChild(thinkingDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+  if (document.getElementById('thinking-indicator')) return;
+  const thinkingDiv = document.createElement('div');
+  thinkingDiv.id = "thinking-indicator";
+  thinkingDiv.className = "msg ai";
+  thinkingDiv.innerText = "🤖 Thinking...";
+  chatContainer.appendChild(thinkingDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 sendBtn.addEventListener('click', handleManualSend);
