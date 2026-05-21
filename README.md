@@ -21,6 +21,7 @@
 
 * **💬 More AI robots available** — Adding a list in the popup with several Gemini models
 * **📝 Native Support** — Introducing this extension in the Chrome Web Store so you no longer need to install/update manually
+* **₿ Donation Crypto Section** — Your support will help the extension upgrade
 * **📷 Adjusting design** — To make the extension to look more professional
 * **🚀 More Functionalities** coming soon!
 
