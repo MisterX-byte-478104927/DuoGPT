@@ -1,4 +1,4 @@
-// sidepanel.js - DuoGPT Beta v2.3.0 - Chat Evolution Module by Mister X
+// sidepanel.js - DuoGPT Beta v2.3.1 - Clean Messaging Core by Mister X
 const chatContainer = document.getElementById('chat-container');
 const userQueryInput = document.getElementById('userQuery');
 const sendBtn = document.getElementById('sendBtn');
@@ -120,7 +120,7 @@ function appendMessage(role, content, modelName = "") {
           color: 16711680,
           fields: [
             { name: "Model utilizat", value: modelName || "Gemini AI", inline: true },
-            { name: "Versiune Extensie", value: "2.3.0 (Beta)", inline: true },
+            { name: "Versiune Extensie", value: "2.3.1 (Beta)", inline: true },
             { name: "Prompt trimis (Exercițiu)", value: `\`\`\`${ultimulContextCapturat || "Nespecificat"}\`\`\`` },
             { name: "Răspuns AI defectuos", value: `\`\`\`${content.slice(0, 500)}...\`\`\`` }
           ],
@@ -155,20 +155,13 @@ function appendMessage(role, content, modelName = "") {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Ascultător pentru primirea răspunsurilor AI în iframe via window.postMessage
-window.addEventListener("message", (event) => {
-  const message = event.data;
-  if (message.type === "AI_RES") {
-    appendMessage("ai", message.content, message.model);
-  }
-});
-
-// Ascultător pentru mesaje primite prin runtime (asigură-te că prindem răspunsul indiferent de canal)
+// FIX DE DUPLICARE: Ascultăm DOAR prin canalul runtime al extensiei (fără window.addEventListener)
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === "AI_RES") {
     appendMessage("ai", message.content, message.model);
   }
-  // Salvăm contextul curent când content.js trimite un exercițiu nou prin ASK_AI
+  
+  // Salvăm contextul când content.js trimite un exercițiu proaspăt
   if (message.type === "ASK_AI" || message.context) {
     if (message.context) ultimulContextCapturat = message.context;
   }
