@@ -153,7 +153,7 @@ function appendMessage(role, content, modelName = "") {
           color: 16711680,
           fields: [
             { name: "Model utilizat", value: modelName || "Gemini AI", inline: true },
-            { name: "Versiune Extensie", value: "2.3.2 (Beta)", inline: true },
+            { name: "Versiune Extensie", value: "2.3.3 (Beta)", inline: true },
             { name: "Prompt trimis (Exercițiu)", value: `\`\`\`${ultimulContextCapturat || "Nespecificat"}\`\`\`` },
             { name: "Răspuns AI defectuos", value: `\`\`\`${content.slice(0, 500)}...\`\`\`` }
           ],
