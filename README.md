@@ -10,7 +10,7 @@
 * **📝 Advanced Formatting (Markdown & Tables):** AI responses are beautifully rendered using custom Duolingo green accents (`#58cc02`), inline key-phrases highlighted in red code-blocks, and fully responsive grammar tables.
 * **🚀 Anti-Spam & Debounce Control:** Native asynchronous state lock prevents double-submission while the AI is computing requests (`THINKING...`).
 
-## ✨ Beta Edition: New Features Coming Soon
+## ✨ Beta Edition: New Features
 
 * **💬 Chat Evolution:** Integrating interactive dynamic buttons for every AI response:
   1. **📋 Copy Button** — Instantly save explanations to your clipboard.
@@ -20,9 +20,13 @@
   5. **🚨 Report Button** — Streamline prompt failures and bugs directly to a dedicated Discord Webhook.
 
 * **💬 More AI robots available** — Adding a list in the popup with several Gemini models
+* **❌ Use AI on wrong answers function** — When on, if you get wrong an exercise, you can't pass after you ask AI what's wrong and wait 5 seconds to read the explanation. *Strong recommended!* (PS Even the key `ENTER` who normally pass the exersice, when you get wrong, its function is redirected to the `EXPLAIN` button!)
+* **📷 Adjusting design** — To make the extension to look more professional
+
+# Next Steps:
+
 * **📝 Native Support** — Introducing this extension in the Chrome Web Store so you no longer need to install/update manually
 * **₿ Donation Crypto Section** — Your support will help the extension upgrade
-* **📷 Adjusting design** — To make the extension to look more professional
 * **🚀 More Functionalities** coming soon!
 
 ## 🛠️ Step-by-Step Installation (Developer Mode)
