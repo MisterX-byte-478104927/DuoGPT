@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusDiv = document.getElementById('status');
   const versionCheckDiv = document.getElementById('version-check');
 
-  const currentVersion = "2.1.1"; // Versiunea curentă a extensiei
+  const currentVersion = "2.1.0"; // Versiunea curentă a extensiei
 
   // 1. Populăm limbile universale
   const languages = [
@@ -30,15 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
     userLangSelect.appendChild(option);
   });
 
-  // 2. Verificarea Versiunii prin algoritmul SemVer definit de tine
+  // 2. Verificarea Versiunii prin algoritm SemVer corectat
   async function checkExtensionVersion() {
     try {
       const repoManifestUrl = 'https://raw.githubusercontent.com/MisterX-byte-478104927/DuoGPT/refs/heads/main/manifest.json';
-      const response = await fetch(repoManifestUrl);
-      if (!response.ok) throw new Error();
+      
+      // Adăugăm un timestamp la URL pentru a fenta cache-ul agresiv al browserului/GitHub
+      const response = await fetch(`${repoManifestUrl}?t=${Date.now()}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       const remoteManifest = await response.json();
-      const remoteVersion = remoteManifest.version; // Ex: "1.3.0"
+      const remoteVersion = remoteManifest.version; 
 
       if (currentVersion === remoteVersion) {
         versionCheckDiv.style.color = "#58cc02";
@@ -46,26 +48,47 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Spargem versiunile în Major.Minor.Patch
       const localParts = currentVersion.split('.').map(Number);
       const remoteParts = remoteVersion.split('.').map(Number);
 
+      // Algoritm SemVer Bulletproof
+      let isNewer = false;
+      let isMajor = false;
+
       if (remoteParts[0] > localParts[0]) {
-        // Schimbare de versiune majoră
-        versionCheckDiv.style.color = "#ff4b4b";
-        versionCheckDiv.innerText = `🚨🚨 Major update available: v${remoteVersion}`;
-      } else if (remoteParts[1] > localParts[1] || remoteParts[2] > localParts[2]) {
-        // Schimbare de versiune minoră sau patch
-        versionCheckDiv.style.color = "#ffb900";
-        versionCheckDiv.innerText = `⚠️ Minor update available: v${remoteVersion}`;
+        isNewer = true;
+        isMajor = true;
+      } else if (remoteParts[0] === localParts[0]) {
+        if (remoteParts[1] > localParts[1]) {
+          isNewer = true;
+        } else if (remoteParts[1] === localParts[1]) {
+          if (remoteParts[2] > localParts[2]) {
+            isNewer = true;
+          }
+        }
       }
+
+      if (isNewer) {
+        if (isMajor) {
+          versionCheckDiv.style.color = "#ff4b4b";
+          versionCheckDiv.innerText = `🚨🚨 Major update available: v${remoteVersion}`;
+        } else {
+          versionCheckDiv.style.color = "#ffb900";
+          versionCheckDiv.innerText = `⚠️ Minor update available: v${remoteVersion}`;
+        }
+      } else {
+        // În caz că versiunea din repo e mai veche decât ce ai local în dev mode
+        versionCheckDiv.style.color = "#58cc02";
+        versionCheckDiv.innerText = `🛠️ Dev Mode Active (v${currentVersion})`;
+      }
+
     } catch (err) {
+      console.error("[DuoGPT Debug] Eroare la verificarea versiunii:", err);
       versionCheckDiv.style.color = "#afafaf";
       versionCheckDiv.innerText = `⚠️ Can't check version (Offline)`;
     }
   }
 
-  // Executăm verificarea rapid la deschidere
   checkExtensionVersion();
 
   // 3. Încărcăm setările din local storage
@@ -76,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data.aiWrongAnswers !== undefined) aiWrongAnswersCheckbox.checked = data.aiWrongAnswers;
   });
 
-  // 4. Salvarea datelor cu blocare temporară anti-spam
+  // 4. Salvarea datelor
   saveBtn.addEventListener('click', () => {
     const apiKey = apiKeyInput.value.trim();
     const geminiModel = geminiModelSelect.value;
