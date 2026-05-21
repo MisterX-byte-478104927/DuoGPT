@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusDiv = document.getElementById('status');
   const versionCheckDiv = document.getElementById('version-check');
 
-  const currentVersion = "2.1.0"; // Versiunea curentă a extensiei
+  const currentVersion = "2.2.1"; // Versiunea curentă a extensiei
 
   // 1. Populăm limbile universale
   const languages = [
