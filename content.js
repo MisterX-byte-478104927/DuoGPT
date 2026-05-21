@@ -1,5 +1,5 @@
-// DuoGPT Beta v2.3.2 by Mister X - STABLE REPAIR
-console.log("DuoGPT Beta v2.3.2 - Clean Core Running");
+// DuoGPT Beta v2.3.3 by Mister X - STABLE REPAIR
+console.log("DuoGPT Beta v2.3.3 - Clean Core Running");
 
 let isWaiting = false;
 let lockdownActive = false;
@@ -178,7 +178,7 @@ function executaExplain() {
     }, 400);
 }
 
-// 5. INJECTARE ȘI VERIFICARE LOCKDOWN
+// 5. INJECTARE ȘI VERIFICARE LOCKDOWN (V2.3.3 Design Upgrade)
 function adaugaButonSiVerificaLockdown() {
     const butoane = document.querySelectorAll('button');
     let btnDuo = null;
@@ -192,25 +192,61 @@ function adaugaButonSiVerificaLockdown() {
 
     if (!btnDuo) return;
 
-    // Injectare buton EXPLAIN
+    // Asigurăm un container flexibil pe părintele butoanelor pentru a controla alinierea perfectă
+    if (btnDuo.parentNode && btnDuo.parentNode.style.display !== 'flex') {
+        btnDuo.parentNode.style.display = 'flex';
+        btnDuo.parentNode.style.alignItems = 'center';
+        btnDuo.parentNode.style.justifyContent = btnDuo.parentNode.style.justifyContent || 'flex-end';
+    }
+
+    // Injectare buton EXPLAIN cu aspect premium 3D
     if (!document.getElementById('btn-explica')) {
         const btn = document.createElement('button');
         btn.id = 'btn-explica';
         btn.innerText = 'EXPLAIN';
         
+        // Stilul 3D Premium compatibil cu interfața Duolingo & Popup-ul tău
         Object.assign(btn.style, {
             backgroundColor: "#1cb0f6",
             border: "none",
             borderBottom: "4px solid #1899d6",
-            borderRadius: "12px",
+            borderRadius: "16px",
             color: "white",
-            padding: "12px 24px",
-            marginRight: "20px",
+            padding: "13px 28px",
+            marginLeft: "0px",
+            marginRight: "50px", // Creează spațiul fix de 50px exact în stânga butonului CHECK
             cursor: "pointer",
-            fontWeight: "bold",
-            fontSize: "17px",
-            zIndex: "9999"
+            fontWeight: "800",
+            fontSize: "15px",
+            fontFamily: '"FeatherBold", "DinRound", "Nunito", sans-serif',
+            letterSpacing: "0.8px",
+            zIndex: "9999",
+            textTransform: "uppercase",
+            transition: "background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease",
+            boxShadow: "0 2px 0 rgba(0,0,0,0.05)",
+            height: "46px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center"
         });
+
+        // Efecte mecanice fluide de Hover și Click (3D Action)
+        btn.onmouseenter = () => {
+            btn.style.backgroundColor = "#37beff";
+        };
+        btn.onmouseleave = () => {
+            btn.style.backgroundColor = "#1cb0f6";
+            btn.style.transform = "none";
+            btn.style.borderBottom = "4px solid #1899d6";
+        };
+        btn.onmousedown = () => {
+            btn.style.transform = "translateY(2px)"; // Coboară butonul la apăsare
+            btn.style.borderBottom = "2px solid #1899d6"; // Subțiază bordura inferioară pentru efectul de apasare 3D
+        };
+        btn.onmouseup = () => {
+            btn.style.transform = "none";
+            btn.style.borderBottom = "4px solid #1899d6";
+        };
 
         btn.onclick = (e) => {
             e.preventDefault();
@@ -218,6 +254,7 @@ function adaugaButonSiVerificaLockdown() {
             executaExplain();
         };
 
+        // Injectează-l exact înaintea butonului nativ Duolingo
         btnDuo.parentNode.insertBefore(btn, btnDuo);
     }
 
@@ -236,15 +273,13 @@ function adaugaButonSiVerificaLockdown() {
         if (isWaiting) return; 
 
         if (hasError) {
-            // Dacă e eroare și nu suntem deja în lockdown, activăm clasa pe BODY și o lăsăm acolo!
             if (!lockdownActive && !blockTimeoutActive) {
                 lockdownActive = true;
-                blockTimeoutActive = true; // Flag-ul ăsta ne asigură că nu blocăm din nou după cele 5 secunde pe același ecran roșu
+                blockTimeoutActive = true; 
                 document.body.classList.add('duogpt-lockdown');
                 console.log("[DuoGPT Core] Lockdown activat. Se așteaptă interacțiunea cu EXPLAIN.");
             }
         } else {
-            // Când ecranul nu mai e roșu (s-a trecut la următorul exercițiu), curățăm toate flag-urile pentru runda următoare
             document.body.classList.remove('duogpt-lockdown');
             lockdownActive = false;
             blockTimeoutActive = false;
