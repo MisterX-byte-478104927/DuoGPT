@@ -1,4 +1,4 @@
-// DuoGPT Beta v2.1.0 by Mister X - DYNAMIC BACKGROUND CORE
+// DuoGPT Beta v2.1.1 by Mister X - DYNAMIC BACKGROUND CORE
 console.log("DuoGPT Beta v2.1.0 - Dynamic Model Routing Engine Loaded");
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
