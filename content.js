@@ -205,47 +205,47 @@ function adaugaButonSiVerificaLockdown() {
         btn.id = 'btn-explica';
         btn.innerText = 'EXPLAIN';
         
-        // Stilul 3D Premium compatibil cu interfața Duolingo & Popup-ul tău
+        // Stilul 3D Calibrat Perfect după standardul Duolingo
         Object.assign(btn.style, {
             backgroundColor: "#1cb0f6",
             border: "none",
-            borderBottom: "4px solid #1899d6",
+            borderBottom: "5px solid #1899d6", // Bordură 3D mai groasă, identică cu cea verde
             borderRadius: "16px",
             color: "white",
-            padding: "13px 28px",
-            marginLeft: "0px",
-            marginRight: "50px", // Creează spațiul fix de 50px exact în stânga butonului CHECK
+            padding: "0px 35px", // Scoatem padding-ul pe verticală ca să lăsăm height-ul să controleze totul
+            marginRight: "50px", 
             cursor: "pointer",
-            fontWeight: "800",
+            fontWeight: "700",
             fontSize: "15px",
             fontFamily: '"FeatherBold", "DinRound", "Nunito", sans-serif',
             letterSpacing: "0.8px",
             zIndex: "9999",
             textTransform: "uppercase",
-            transition: "background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease",
+            transition: "background-color 0.2s ease, filter 0.2s ease", // Curățăm tranzicțiile ca să nu agațe
             boxShadow: "0 2px 0 rgba(0,0,0,0.05)",
-            height: "46px",
+            height: "50px", // Sincronizat la fix cu butonul VERIFICĂ
+            minWidth: "150px", // Îl lățește ca să nu mai arate turtit
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center"
         });
 
-        // Efecte mecanice fluide de Hover și Click (3D Action)
+        // Efecte mecanice calibrate pentru bordura de 5px
         btn.onmouseenter = () => {
             btn.style.backgroundColor = "#37beff";
         };
         btn.onmouseleave = () => {
             btn.style.backgroundColor = "#1cb0f6";
             btn.style.transform = "none";
-            btn.style.borderBottom = "4px solid #1899d6";
+            btn.style.borderBottom = "5px solid #1899d6";
         };
         btn.onmousedown = () => {
-            btn.style.transform = "translateY(2px)"; // Coboară butonul la apăsare
-            btn.style.borderBottom = "2px solid #1899d6"; // Subțiază bordura inferioară pentru efectul de apasare 3D
+            btn.style.transform = "translateY(2px)"; // Coboară fluid
+            btn.style.borderBottom = "3px solid #1899d6"; // Rămâne structura de click neschimbată
         };
         btn.onmouseup = () => {
             btn.style.transform = "none";
-            btn.style.borderBottom = "4px solid #1899d6";
+            btn.style.borderBottom = "5px solid #1899d6";
         };
 
         btn.onclick = (e) => {
