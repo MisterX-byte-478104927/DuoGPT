@@ -112,7 +112,7 @@ function appendMessage(role, content, modelName = "") {
       reportBtn.innerHTML = "Sending...";
       reportBtn.disabled = true;
       
-      const discordWebhookUrl = "https://discord.com/api/webhooks/AICI_PUI_ID_UL_TAU_DE_WEBHOOK";
+      const discordWebhookUrl = "https://discord.com/api/webhooks/1507042373052399756/B5cozERpxaL-VmKRfcP6jCDSRwe69Ijh020XimJ1VWuNtE-yw9B1qjUfk2xm-_Zv0hj5";
       
       const payload = {
         embeds: [{
