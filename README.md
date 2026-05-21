@@ -23,7 +23,7 @@
 * **❌ Use AI on wrong answers function** — When on, if you get wrong an exercise, you can't pass after you ask AI what's wrong and wait 5 seconds to read the explanation. *Strong recommended!* (PS Even the key `ENTER` who normally pass the exersice, when you get wrong, its function is redirected to the `EXPLAIN` button!)
 * **📷 Adjusting design** — To make the extension to look more professional
 
-# Next Steps:
+### Next Steps:
 
 * **📝 Native Support** — Introducing this extension in the Chrome Web Store so you no longer need to install/update manually
 * **₿ Donation Crypto Section** — Your support will help the extension upgrade
