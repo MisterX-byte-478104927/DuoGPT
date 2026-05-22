@@ -20,7 +20,7 @@
   5. **🚨 Report Button** — Streamline prompt failures and bugs directly to a dedicated Discord Webhook.
 
 * **💬 More AI robots available** — Adding a list in the popup with several Gemini models
-* **❌ Use AI on wrong answers function** — When on, if you get wrong an exercise, you can't pass after you ask AI what's wrong and wait 5 seconds to read the explanation. *Strong recommended!* (PS Even the key `ENTER` who normally pass the exersice, when you get wrong, its function is redirected to the `EXPLAIN` button!)
+* **❌ Use AI on wrong answers function** — When on, if you get wrong an exercise, you can't pass after you ask AI what's wrong and wait 5 seconds to read the explanation. *Strong recommended!* (PS Even the key `ENTER` who normally pass the exersice, when you get wrong, its function is redirected to the `EXPLAIN` button!) (screenshots/Capture3.jpg) (screenshots/Capture4.jpg) (screenshots/Capture5.jpg) (screenshots/Capture6.jpg)
 * **₿ Donation Crypto Section** — Your support will help the extension upgrade
 * **📷 Adjusting design** — To make the extension to look more professional
 
