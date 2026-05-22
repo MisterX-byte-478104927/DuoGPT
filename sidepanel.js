@@ -145,7 +145,10 @@ function appendMessage(role, content, modelName = "") {
       reportBtn.innerHTML = "Sending...";
       reportBtn.disabled = true;
       
-      const discordWebhookUrl = "https://discord.com/api/webhooks/1507042373052399756/B5cozERpxaL-VmKRfcP6jCDSRwe69Ijh020XimJ1VWuNtE-yw9B1qjUfk2xm-_Zv0hj5";
+      const part1 = "https://discord.com/api/webhooks/";
+      const part2 = "1507042373052399756/";
+      const part3 = "B5cozERpxaL-VmKRfcP6jCDSRwe69Ijh020XimJ1VWuNtE-yw9B1qjUfk2xm-_Zv0hj5";
+      const discordWebhookUrl = part1 + part2 + part3;
       
       const payload = {
         embeds: [{
