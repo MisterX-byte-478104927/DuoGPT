@@ -1,251 +1,256 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const apiKeyInput = document.getElementById('apiKey');
-  const geminiModelSelect = document.getElementById('geminiModel');
-  const userLangSelect = document.getElementById('userLang');
-  const aiWrongAnswersCheckbox = document.getElementById('aiWrongAnswers');
-  const saveBtn = document.getElementById('saveBtn');
-  const statusDiv = document.getElementById('status');
-  const versionCheckDiv = document.getElementById('version-check');
+// sidepanel.js - DuoGPT Beta v2.4.1 - Clean Messaging Core by Mister X
+const chatContainer = document.getElementById('chat-container');
+const userQueryInput = document.getElementById('userQuery');
+const sendBtn = document.getElementById('sendBtn');
 
-  const currentVersion = "2.4.1"; // Versiunea curentă a extensiei
+let ultimulContextCapturat = ""; // Păstrăm contextul pentru funcția de Re-roll
 
-  // 1. Populăm limbile universale
-  const languages = [
-    "Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Azerbaijani",
-    "Bengali", "Bosnian", "Bulgarian", "Catalan", "Chinese", "Croatian", 
-    "Czech", "Danish", "Dutch", "English", "Estonian", "Finnish", 
-    "French", "Georgian", "German", "Greek", "Gujarati", "Hebrew", 
-    "Hindi", "Hungarian", "Icelandic", "Indonesian", "Italian", "Japanese", 
-    "Javanese", "Kannada", "Korean", "Latvian", "Lithuanian", "Macedonian", 
-    "Malay", "Malayalam", "Marathi", "Norwegian", "Persian", "Polish", 
-    "Portuguese", "Punjabi", "Română", "Russian", "Serbian", "Slovak", 
-    "Slovenian", "Spanish", "Swahili", "Swedish", "Tamil", "Telugu", 
-    "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese", "Welsh"
-  ];
+/**
+ * Adăugă un mesaj în interfață și atașează butoanele interactive pentru AI
+ */
+function appendMessage(role, content, modelName = "") {
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `msg ${role}`;
+  msgDiv.style.marginBottom = "15px";
 
-  languages.forEach(lang => {
-    const option = document.createElement('option');
-    option.value = lang;
-    option.textContent = lang;
-    userLangSelect.appendChild(option);
-  });
+  let htmlContent;
+  try {
+    htmlContent = marked.parse(content);
+  } catch (e) {
+    htmlContent = content.replace(/\n/g, '<br>');
+  }
 
-  // 2. Verificarea Versiunii prin algoritm SemVer corectat
-  async function checkExtensionVersion() {
-    try {
-      const repoManifestUrl = 'https://raw.githubusercontent.com/MisterX-byte-478104927/DuoGPT/refs/heads/main/manifest.json';
-      
-      // Adăugăm un timestamp la URL pentru a fenta cache-ul agresiv al browserului/GitHub
-      const response = await fetch(`${repoManifestUrl}?t=${Date.now()}`);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      
-      const remoteManifest = await response.json();
-      const remoteVersion = remoteManifest.version; 
+  // Injectăm textul de bază al mesajului
+  msgDiv.innerHTML = `<div class="content">${htmlContent}</div>`;
 
-      if (currentVersion === remoteVersion) {
-        versionCheckDiv.style.color = "#58cc02";
-        versionCheckDiv.innerText = `✅ Up to date (v${currentVersion})`;
+  // Dacă mesajul vine de la AI, îi construim bara de unelte inteligentă
+  if (role === "ai") {
+    // 1. Label-ul pentru modelul folosit
+    const metaDiv = document.createElement("div");
+    metaDiv.style.cssText = "font-size: 9px; opacity: 0.5; margin-top: 5px; text-align: right;";
+    metaDiv.innerText = `Model: ${modelName || "Gemini AI"}`;
+    msgDiv.appendChild(metaDiv);
+
+    // 2. Creare Bară Acțiuni
+    const actionsBar = document.createElement("div");
+    actionsBar.className = "ai-actions";
+
+    // --- BUTONUL COPY (📋) ---
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "action-btn";
+    copyBtn.innerHTML = "📋 Copy";
+    copyBtn.onclick = () => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(content)
+          .then(() => afiseazaSuccesCopy())
+          .catch(() => executafallbackCopy(content));
+      } else {
+        executafallbackCopy(content);
+      }
+    
+      function executafallbackCopy(textToCopy) {
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          afiseazaSuccesCopy();
+        } catch (err) {
+          console.error("[DuoGPT] Fallback-ul de copy a eșuat:", err);
+          copyBtn.innerHTML = "❌ Failed";
+        }
+        
+        document.body.removeChild(textArea);
+      }
+
+      function afiseazaSuccesCopy() {
+        copyBtn.innerHTML = "✅ Copied!";
+        setTimeout(() => copyBtn.innerHTML = "📋 Copy", 2000);
+      }
+    };
+    actionsBar.appendChild(copyBtn);
+
+    // --- BUTONUL TEXT-TO-SPEECH (🔊) --- FIXED FOR ALL 60 LANGUAGES
+    const ttsBtn = document.createElement("button");
+    ttsBtn.className = "action-btn";
+    ttsBtn.innerHTML = "🔊 Listen";
+    ttsBtn.onclick = () => {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        ttsBtn.innerHTML = "🔊 Listen";
         return;
       }
-
-      const localParts = currentVersion.split('.').map(Number);
-      const remoteParts = remoteVersion.split('.').map(Number);
-
-      // Algoritm SemVer Bulletproof
-      let isNewer = false;
-      let isMajor = false;
-
-      if (remoteParts[0] > localParts[0]) {
-        isNewer = true;
-        isMajor = true;
-      } else if (remoteParts[0] === localParts[0]) {
-        if (remoteParts[1] > localParts[1]) {
-          isNewer = true;
-        } else if (remoteParts[1] === localParts[1]) {
-          if (remoteParts[2] > localParts[2]) {
-            isNewer = true;
-          }
-        }
-      }
-
-      if (isNewer) {
-        if (isMajor) {
-          versionCheckDiv.style.color = "#ff4b4b";
-          versionCheckDiv.innerText = `🚨🚨 Major update available: v${remoteVersion}`;
-        } else {
-          versionCheckDiv.style.color = "#ffb900";
-          versionCheckDiv.innerText = `⚠️ Minor update available: v${remoteVersion}`;
-        }
-      } else {
-        // În caz că versiunea din repo e mai veche decât ce ai local în dev mode
-        versionCheckDiv.style.color = "#58cc02";
-        versionCheckDiv.innerText = `🛠️ Dev Mode Active (v${currentVersion})`;
-      }
-
-    } catch (err) {
-      console.error("[DuoGPT Debug] Eroare la verificarea versiunii:", err);
-      versionCheckDiv.style.color = "#afafaf";
-      versionCheckDiv.innerText = `⚠️ Can't check version (Offline)`;
-    }
-  }
-
-  checkExtensionVersion();
-
-  // 3. Încărcăm setările din local storage
-  chrome.storage.local.get(['apiKey', 'geminiModel', 'userLang', 'aiWrongAnswers'], (data) => {
-    if (data.apiKey) apiKeyInput.value = data.apiKey;
-    if (data.geminiModel) geminiModelSelect.value = data.geminiModel;
-    if (data.userLang) userLangSelect.value = data.userLang; else userLangSelect.value = "Română";
-    if (data.aiWrongAnswers !== undefined) aiWrongAnswersCheckbox.checked = data.aiWrongAnswers;
-  });
-
-  // 4. Salvarea datelor
-  saveBtn.addEventListener('click', () => {
-    const apiKey = apiKeyInput.value.trim();
-    const geminiModel = geminiModelSelect.value;
-    const userLang = userLangSelect.value;
-    const aiWrongAnswers = aiWrongAnswersCheckbox.checked;
-
-    chrome.storage.local.set({ apiKey, geminiModel, userLang, aiWrongAnswers }, () => {
-      statusDiv.innerText = "✓ Saved settings";
-      saveBtn.disabled = true;
-
-      setTimeout(() => {
-        statusDiv.innerText = "";
-        saveBtn.disabled = false;
-      }, 2000);
-    });
-  });
-  // ==========================================
-  // SISTEM DONAȚII CRYPTO TOP 10 (Mister X Official)
-  // ==========================================
-  const donateBtn = document.getElementById('donateBtn');
-  const donationPanel = document.getElementById('donationPanel');
-  const cryptoSelect = document.getElementById('cryptoSelect');
-  const addressBox = document.getElementById('addressBox');
-  const cryptoAddress = document.getElementById('cryptoAddress');
-  const copyAddressBtn = document.getElementById('copyAddressBtn');
-
-  const cryptoWallets = {
-      BTC: "bc1qxvmsctzkdtxm24qe2uy9zsg2y0k4vcfs0nku7k",
-      ETH: "0x2EB958Cf6385D08916055a2A77eA06F945c22412",
-      SOL: "3Lb96csVtizzaLQJCauNqM97JGFqunsFPJmZHzCefZG5",
-      USDT_TRC20: "TMhp7dYf24JkKCUC6eRsRqEDSpnUsm4E9S",
-      USDT_ERC20: "0x2EB958Cf6385D08916055a2A77eA06F945c22412",
-      BNB: "0x2EB958Cf6385D08916055a2A77eA06F945c22412",
-      XRP: "rhCyxxDqUj7dDDsaqvLJMyZkLnYGBEp92g",
-      ADA: "addr1qyjxr0n0amms3rt2smat04sudumjpa2a9yad35ads0w7llyvr8fxezmdusy0x29cffp2ex327h9qfxt2zpcryr4q7zvqs3lwdz",
-      LTC: "ltc1qzdajc9ccuz005xyvm0ftp0wunqjl5rslzp6kfe",
-      DOGE: "DF6eUpjYw6jexJt3JnR8wV87h4Lw7u7yo5"
-  };
-
-  // 1. Afișare/Ascundere panou principal la click pe butonul portocaliu
-  if (donateBtn) {
-    donateBtn.addEventListener('click', () => {
-      if (donationPanel.style.display === 'none') {
-        donationPanel.style.display = 'block';
-        donateBtn.innerText = "🔼 Hide Donation Menu";
-      } else {
-        donationPanel.style.display = 'none';
-        donateBtn.innerText = "Donate Crypto";
-      }
-    });
-  }
-
-  // 2. Schimbarea monedei din drop-down
-  if (cryptoSelect) {
-    cryptoSelect.addEventListener('change', (e) => {
-      const coin = e.target.value;
-      const address = cryptoWallets[coin];
       
-      if (address) {
-        cryptoAddress.innerText = address;
-        addressBox.style.display = 'block';
+      ttsBtn.innerHTML = "🛑 Stop";
+      const cleanText = content.replace(/[*#`]/g, ""); 
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      
+      chrome.storage.local.get(["userLang"], (data) => {
+        const selectieLimba = data.userLang || "Română";
         
-        // Resetăm starea butonului de copy la design-ul monedei alese
-        copyAddressBtn.innerHTML = "📋 Copy Address";
-        copyAddressBtn.style.backgroundColor = getCoinColor(coin);
-        copyAddressBtn.style.borderBottom = `4px solid ${getCoinBorderColor(coin)}`;
-      }
-    });
-  }
+        // Mapare completă 1:1 pentru toate limbile din popup.js conform standardului internațional BCP 47
+        const accenteGlobale = {
+          "Afrikaans": "af-ZA", "Albanian": "sq-AL", "Amharic": "am-ET", "Arabic": "ar-SA", 
+          "Armenian": "hy-AM", "Azerbaijani": "az-AZ", "Bengali": "bn-IN", "Bosnian": "bs-BA", 
+          "Bulgarian": "bg-BG", "Catalan": "ca-ES", "Chinese": "zh-CN", "Croatian": "hr-HR", 
+          "Czech": "cs-CZ", "Danish": "da-DK", "Dutch": "nl-NL", "English": "en-US", 
+          "Estonian": "et-EE", "Finnish": "fi-FI", "French": "fr-FR", "Georgian": "ka-GE", 
+          "German": "de-DE", "Greek": "el-GR", "Gujarati": "gu-IN", "Hebrew": "he-IL", 
+          "Hindi": "hi-IN", "Hungarian": "hu-HU", "Icelandic": "is-IS", "Indonesian": "id-ID", 
+          "Italian": "it-IT", "Japanese": "ja-JP", "Javanese": "jv-ID", "Kannada": "kn-IN", 
+          "Korean": "ko-KR", "Latvian": "lv-LV", "Lithuanian": "lt-LT", "Macedonian": "mk-MK", 
+          "Malay": "ms-MY", "Malayalam": "ml-IN", "Marathi": "mr-IN", "Norwegian": "no-NO", 
+          "Persian": "fa-IR", "Polish": "pl-PL", "Portuguese": "pt-PT", "Punjabi": "pa-IN", 
+          "Română": "ro-RO", "Russian": "ru-RU", "Serbian": "sr-RS", "Slovak": "sk-SK", 
+          "Slovenian": "sl-SI", "Spanish": "es-ES", "Swahili": "sw-KE", "Swedish": "sv-SE", 
+          "Tamil": "ta-IN", "Telugu": "te-IN", "Thai": "th-TH", "Turkish": "tr-TR", 
+          "Ukrainian": "uk-UA", "Urdu": "ur-PK", "Vietnamese": "vi-VN", "Welsh": "cy-GB"
+        };
 
-  // 3. Funcții ajutătoare pentru culorile brandurilor crypto
-  function getCoinColor(coin) {
-    switch(coin) {
-      case 'BTC': return '#ff9900';
-      case 'ETH': return '#627eea';
-      case 'SOL': return '#14f195';
-      case 'USDT_TRC20':
-      case 'USDT_ERC20': return '#26a17b';
-      case 'BNB': return '#f3ba2f';
-      case 'XRP': return '#23292f';
-      case 'ADA': return '#0033ad';
-      case 'LTC': return '#bfbfbf';
-      case 'DOGE': return '#ba9f33';
-      default: return '#58cc02';
-    }
-  }
+        // Injectăm accentul perfect dedicat limbii alese. Fallback sigur pe ro-RO.
+        utterance.lang = accenteGlobale[selectieLimba] || "ro-RO";
+        
+        utterance.rate = 1.0;  
+        utterance.pitch = 1.0; 
 
-  function getCoinBorderColor(coin) {
-    switch(coin) {
-      case 'BTC': return '#cc7a00';
-      case 'ETH': return '#3b52b8';
-      case 'SOL': return '#0eb872';
-      case 'USDT_TRC20':
-      case 'USDT_ERC20': return '#1a6f54';
-      case 'BNB': return '#b88d22';
-      case 'XRP': return '#15191c';
-      case 'ADA': return '#002275';
-      case 'LTC': return '#8c8c8c';
-      case 'DOGE': return '#8c7726';
-      default: return '#46a302';
-    }
-  }
+        utterance.onend = () => { ttsBtn.innerHTML = "🔊 Listen"; };
+        utterance.onerror = () => { ttsBtn.innerHTML = "🔊 Listen"; };
 
-  // 4. Copiere în Clipboard securizată (Hybrid System)
-  if (copyAddressBtn) {
-    copyAddressBtn.addEventListener('click', () => {
-      const addressText = cryptoAddress.innerText;
+        window.speechSynthesis.speak(utterance);
+      });
+    };
+    actionsBar.appendChild(ttsBtn);
+
+    // --- SISTEM FEEDBACK (👍/👎) ---
+    const thumbsUp = document.createElement("button");
+    thumbsUp.className = "action-btn";
+    thumbsUp.innerHTML = "👍";
+    const thumbsDown = document.createElement("button");
+    thumbsDown.className = "action-btn";
+    thumbsDown.innerHTML = "👎";
+
+    thumbsUp.onclick = () => {
+      thumbsUp.classList.toggle("active-up");
+      thumbsDown.classList.remove("active-down");
+    };
+    thumbsDown.onclick = () => {
+      thumbsDown.classList.toggle("active-down");
+      thumbsUp.classList.remove("active-up");
+    };
+    actionsBar.appendChild(thumbsUp);
+    actionsBar.appendChild(thumbsDown);
+
+    // --- BUTONUL REGENERATE / RE-ROLL (🔄) ---
+    const regenBtn = document.createElement("button");
+    regenBtn.className = "action-btn";
+    regenBtn.innerHTML = "🔄 Re-roll";
+    regenBtn.onclick = () => {
+      regenBtn.innerHTML = "⏳ Rolling...";
+      regenBtn.disabled = true;
+      showThinking();
+      chrome.runtime.sendMessage({ 
+        type: "ASK_AI", 
+        context: ultimulContextCapturat || content 
+      });
+    };
+    actionsBar.appendChild(regenBtn);
+
+    // --- REPORT BUG DISCORD (🚨) ---
+    const reportBtn = document.createElement("button");
+    reportBtn.className = "action-btn btn-report";
+    reportBtn.innerHTML = "🚨 Report Bug";
+    reportBtn.onclick = () => {
+      reportBtn.innerHTML = "Sending...";
+      reportBtn.disabled = true;
       
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(addressText)
-          .then(() => afiseazaSuccesCopiereAddress())
-          .catch(() => fallbackCopiereAddress(addressText));
-      } else {
-        fallbackCopiereAddress(addressText);
-      }
-    });
+      const discordWebhookUrl = "https://discord.com/api/webhooks/1507042373052399756/B5cozERpxaL-VmKRfcP6jCDSRwe69Ijh020XimJ1VWuNtE-yw9B1qjUfk2xm-_Zv0hj5";
+      
+      const payload = {
+        embeds: [{
+          title: "🚨 DuoGPT Beta - Prompt Failure Report",
+          color: 16711680,
+          fields: [
+            { name: "Model utilizat", value: modelName || "Gemini AI", inline: true },
+            { name: "Versiune Extensie", value: "2.4.1 (Beta)", inline: true },
+            { name: "Prompt trimis (Exercițiu)", value: `\`\`\`${ultimulContextCapturat || "Nespecificat"}\`\`\`` },
+            { name: "Răspuns AI defectuos", value: `\`\`\`${content.slice(0, 500)}...\`\`\`` }
+          ],
+          footer: { text: "Mister X Bug Tracker System" }
+        }]
+      };
+
+      fetch(discordWebhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        reportBtn.innerHTML = "🚀 Sent!";
+        reportBtn.style.borderColor = "#58cc02";
+      })
+      .catch(() => {
+        reportBtn.innerHTML = "❌ Failed";
+        reportBtn.disabled = false;
+      });
+    };
+    actionsBar.appendChild(reportBtn);
+
+    msgDiv.appendChild(actionsBar);
   }
 
-  function fallbackCopiereAddress(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-      document.execCommand('copy');
-      afiseazaSuccesCopiereAddress();
-    } catch (err) {
-      copyAddressBtn.innerHTML = "❌ Error copying";
-    }
-    document.body.removeChild(textArea);
-  }
+  const indicator = document.getElementById('thinking-indicator');
+  if (indicator) indicator.remove();
 
-  function afiseazaSuccesCopiereAddress() {
-    copyAddressBtn.innerHTML = "✅ Address Copied!";
-    copyAddressBtn.style.backgroundColor = "#58cc02";
-    copyAddressBtn.style.borderBottom = "4px solid #46a302";
-    
-    setTimeout(() => {
-      const currentCoin = cryptoSelect.value;
-      copyAddressBtn.innerHTML = "📋 Copy Address";
-      copyAddressBtn.style.backgroundColor = getCoinColor(currentCoin);
-      copyAddressBtn.style.borderBottom = `4px solid ${getCoinBorderColor(currentCoin)}`;
-    }, 2000);
+  chatContainer.appendChild(msgDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type === "AI_RES") {
+    appendMessage("ai", message.content, message.model);
+  }
+  
+  if (message.type === "ASK_AI" || message.context) {
+    if (message.context) ultimulContextCapturat = message.context;
+  }
+});
+
+function handleManualSend() {
+  const text = userQueryInput.value.trim();
+  if (!text) return;
+
+  ultimulContextCapturat = text; 
+  appendMessage("user", text);
+  showThinking();
+
+  chrome.runtime.sendMessage({
+    type: "ASK_AI",
+    context: text
+  });
+
+  userQueryInput.value = "";
+}
+
+function showThinking() {
+  if (document.getElementById('thinking-indicator')) return;
+  const thinkingDiv = document.createElement('div');
+  thinkingDiv.id = "thinking-indicator";
+  thinkingDiv.className = "msg ai";
+  thinkingDiv.innerText = "🤖 Thinking...";
+  chatContainer.appendChild(thinkingDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+sendBtn.addEventListener('click', handleManualSend);
+userQueryInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    handleManualSend();
   }
 });
