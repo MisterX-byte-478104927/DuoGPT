@@ -126,8 +126,14 @@ input[type="checkbox"] {
 .btn-orange {
   background: #ff9600;
   border-bottom: 4px solid #e07b00;
-  opacity: 0.6; /* Subliniem că e "coming soon" */
-  cursor: not-allowed;
+  opacity: 1 !important; /* Forțăm luminozitatea maximă */
+  cursor: pointer !important; /* Cursor de mână activă */
+}
+
+/* Efectul de apăsare 3D pentru butonul portocaliu */
+.btn-orange:active { 
+  margin-top: 12px; 
+  margin-bottom: 4px; 
 }
 
 #status { 
