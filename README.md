@@ -10,6 +10,8 @@
 * **📝 Advanced Formatting (Markdown & Tables):** AI responses are beautifully rendered using custom Duolingo green accents (`#58cc02`), inline key-phrases highlighted in red code-blocks, and fully responsive grammar tables.
 * **🚀 Anti-Spam & Debounce Control:** Native asynchronous state lock prevents double-submission while the AI is computing requests (`THINKING...`).
 
+![EXPLAIN](screenshots/Capture1.JPG) ![chat](screenshots/Capture2.JPG)
+
 ## ✨ Beta Edition: New Features
 
 * **💬 Chat Evolution:** Integrating interactive dynamic buttons for every AI response:
