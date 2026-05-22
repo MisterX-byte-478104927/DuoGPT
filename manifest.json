@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DuoGPT Beta",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "AI Copilot providing structured explanations and tools for Duolingo lessons.",
   "permissions": [
     "storage",
