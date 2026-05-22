@@ -34,7 +34,31 @@
   <button id="saveBtn" class="btn-duo btn-green">Save Settings</button>
   
   <a id="githubBtn" href="https://github.com/MisterX-byte-478104927/DuoGPT" target="_blank" class="btn-duo btn-blue">View on GitHub</a>
-  <button id="donateBtn" class="btn-duo btn-orange" disabled>Donate Crypto (Soon)</button>
+  
+  <button id="donateBtn" class="btn-duo btn-orange">Donate Crypto</button>
+
+  <div id="donationPanel" style="display: none; margin-top: 12px; padding: 12px; border: 2px solid #e5e5e5; border-bottom: 4px solid #e5e5e5; border-radius: 14px; background: #fafafa; text-align: left;">
+    <label style="font-weight: bold; font-size: 13px; color: #4b4b4b; display: block; margin-bottom: 6px;">Select Coin:</label>
+    
+    <select id="cryptoSelect" style="width: 100%; padding: 8px; border-radius: 10px; border: 2px solid #e5e5e5; font-weight: bold; color: #4b4b4b; margin-bottom: 10px; outline: none;">
+      <option value="" disabled selected>Choose a cryptocurrency...</option>
+      <option value="BTC">Bitcoin (BTC)</option>
+      <option value="ETH">Ethereum (ETH)</option>
+      <option value="SOL">Solana (SOL)</option>
+      <option value="USDT_TRC20">Tether (USDT - TRC20)</option>
+      <option value="USDT_ERC20">Tether (USDT - ERC20)</option>
+      <option value="BNB">Binance Coin (BNB - BSC)</option>
+      <option value="XRP">Ripple (XRP)</option>
+      <option value="ADA">Cardano (ADA)</option>
+      <option value="LTC">Litecoin (LTC)</option>
+      <option value="DOGE">Dogecoin (DOGE)</option>
+    </select>
+
+    <div id="addressBox" style="display: none;">
+      <div id="cryptoAddress" style="font-size: 11px; word-break: break-all; font-family: monospace; color: #3c3c3c; background: #fff; padding: 8px; border: 1px dashed #ccc; border-radius: 8px; margin-bottom: 8px; font-weight: bold;"></div>
+      <button id="copyAddressBtn" class="btn-duo" style="padding: 8px; font-size: 13px; margin: 0; width: 100%; color: white;">📋 Copy Address</button>
+    </div>
+  </div>
 
   <div id="status"></div>
 
