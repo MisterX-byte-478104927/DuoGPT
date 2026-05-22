@@ -1,5 +1,5 @@
-// DuoGPT Beta v2.3.3 by Mister X - STABLE REPAIR
-console.log("DuoGPT Beta v2.3.3 - Clean Core Running");
+// DuoGPT Beta v2.4.1 by Mister X - STABLE REPAIR
+console.log("DuoGPT Beta v2.4.1 - Clean Core Running");
 
 let isWaiting = false;
 let lockdownActive = false;
