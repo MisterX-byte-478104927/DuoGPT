@@ -46,7 +46,12 @@ async function handleGoogleStudio(request, sender) {
     const aiText = result.candidates[0].content.parts[0].text;
 
     // Mapare curată pentru un afișaj frumos în UI-ul din sidepanel
-    const numeModelFrumos = modelSelectat === "gemini-2.5-pro" ? "Gemini 2.5 Pro" : "Gemini 2.5 Flash";
+    if (modelSelectat === "gemini-2.5-pro")
+    	numeModelFrumos = "Gemini 2.5 Pro";
+    else if (modelSelectat === "gemini-2.5-flash")
+	    numeModelFrumos = "Gemini 2.5 Flash";
+    else
+	    numeModelFrumos = "Gemini 2.5 Flash Lite";
 
     chrome.tabs.sendMessage(sender.tab.id, { 
       type: "AI_RES", 
