@@ -116,4 +116,136 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 2000);
     });
   });
+  // ==========================================
+  // SISTEM DONAȚII CRYPTO TOP 10 (Mister X Official)
+  // ==========================================
+  const donateBtn = document.getElementById('donateBtn');
+  const donationPanel = document.getElementById('donationPanel');
+  const cryptoSelect = document.getElementById('cryptoSelect');
+  const addressBox = document.getElementById('addressBox');
+  const cryptoAddress = document.getElementById('cryptoAddress');
+  const copyAddressBtn = document.getElementById('copyAddressBtn');
+
+  const cryptoWallets = {
+      BTC: "bc1qxvmsctzkdtxm24qe2uy9zsg2y0k4vcfs0nku7k",
+      ETH: "0x2EB958Cf6385D08916055a2A77eA06F945c22412",
+      SOL: "3Lb96csVtizzaLQJCauNqM97JGFqunsFPJmZHzCefZG5",
+      USDT_TRC20: "TMhp7dYf24JkKCUC6eRsRqEDSpnUsm4E9S",
+      USDT_ERC20: "0x2EB958Cf6385D08916055a2A77eA06F945c22412",
+      BNB: "0x2EB958Cf6385D08916055a2A77eA06F945c22412",
+      XRP: "rhCyxxDqUj7dDDsaqvLJMyZkLnYGBEp92g",
+      ADA: "addr1qyjxr0n0amms3rt2smat04sudumjpa2a9yad35ads0w7llyvr8fxezmdusy0x29cffp2ex327h9qfxt2zpcryr4q7zvqs3lwdz",
+      LTC: "ltc1qzdajc9ccuz005xyvm0ftp0wunqjl5rslzp6kfe",
+      DOGE: "DF6eUpjYw6jexJt3JnR8wV87h4Lw7u7yo5"
+  };
+
+  // 1. Afișare/Ascundere panou principal la click pe butonul portocaliu
+  if (donateBtn) {
+    donateBtn.addEventListener('click', () => {
+      if (donationPanel.style.display === 'none') {
+        donationPanel.style.display = 'block';
+        donateBtn.innerText = "🔼 Hide Donation Menu";
+      } else {
+        donationPanel.style.display = 'none';
+        donateBtn.innerText = "Donate Crypto";
+      }
+    });
+  }
+
+  // 2. Schimbarea monedei din drop-down
+  if (cryptoSelect) {
+    cryptoSelect.addEventListener('change', (e) => {
+      const coin = e.target.value;
+      const address = cryptoWallets[coin];
+      
+      if (address) {
+        cryptoAddress.innerText = address;
+        addressBox.style.display = 'block';
+        
+        // Resetăm starea butonului de copy la design-ul monedei alese
+        copyAddressBtn.innerHTML = "📋 Copy Address";
+        copyAddressBtn.style.backgroundColor = getCoinColor(coin);
+        copyAddressBtn.style.borderBottom = `4px solid ${getCoinBorderColor(coin)}`;
+      }
+    });
+  }
+
+  // 3. Funcții ajutătoare pentru culorile brandurilor crypto
+  function getCoinColor(coin) {
+    switch(coin) {
+      case 'BTC': return '#ff9900';
+      case 'ETH': return '#627eea';
+      case 'SOL': return '#14f195';
+      case 'USDT_TRC20':
+      case 'USDT_ERC20': return '#26a17b';
+      case 'BNB': return '#f3ba2f';
+      case 'XRP': return '#23292f';
+      case 'ADA': return '#0033ad';
+      case 'LTC': return '#bfbfbf';
+      case 'DOGE': return '#ba9f33';
+      default: return '#58cc02';
+    }
+  }
+
+  function getCoinBorderColor(coin) {
+    switch(coin) {
+      case 'BTC': return '#cc7a00';
+      case 'ETH': return '#3b52b8';
+      case 'SOL': return '#0eb872';
+      case 'USDT_TRC20':
+      case 'USDT_ERC20': return '#1a6f54';
+      case 'BNB': return '#b88d22';
+      case 'XRP': return '#15191c';
+      case 'ADA': return '#002275';
+      case 'LTC': return '#8c8c8c';
+      case 'DOGE': return '#8c7726';
+      default: return '#46a302';
+    }
+  }
+
+  // 4. Copiere în Clipboard securizată (Hybrid System)
+  if (copyAddressBtn) {
+    copyAddressBtn.addEventListener('click', () => {
+      const addressText = cryptoAddress.innerText;
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(addressText)
+          .then(() => afiseazaSuccesCopiereAddress())
+          .catch(() => fallbackCopiereAddress(addressText));
+      } else {
+        fallbackCopiereAddress(addressText);
+      }
+    });
+  }
+
+  function fallbackCopiereAddress(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+      afiseazaSuccesCopiereAddress();
+    } catch (err) {
+      copyAddressBtn.innerHTML = "❌ Error copying";
+    }
+    document.body.removeChild(textArea);
+  }
+
+  function afiseazaSuccesCopiereAddress() {
+    copyAddressBtn.innerHTML = "✅ Address Copied!";
+    copyAddressBtn.style.backgroundColor = "#58cc02";
+    copyAddressBtn.style.borderBottom = "4px solid #46a302";
+    
+    setTimeout(() => {
+      const currentCoin = cryptoSelect.value;
+      copyAddressBtn.innerHTML = "📋 Copy Address";
+      copyAddressBtn.style.backgroundColor = getCoinColor(currentCoin);
+      copyAddressBtn.style.borderBottom = `4px solid ${getCoinBorderColor(currentCoin)}`;
+    }, 2000);
+  }
 });
