@@ -21,12 +21,12 @@
 
 * **💬 More AI robots available** — Adding a list in the popup with several Gemini models
 * **❌ Use AI on wrong answers function** — When on, if you get wrong an exercise, you can't pass after you ask AI what's wrong and wait 5 seconds to read the explanation. *Strong recommended!* (PS Even the key `ENTER` who normally pass the exersice, when you get wrong, its function is redirected to the `EXPLAIN` button!)
+* **₿ Donation Crypto Section** — Your support will help the extension upgrade
 * **📷 Adjusting design** — To make the extension to look more professional
 
 ### Next Steps:
 
 * **📝 Native Support** — Introducing this extension in the Chrome Web Store so you no longer need to install/update manually
-* **₿ Donation Crypto Section** — Your support will help the extension upgrade
 * **🚀 More Functionalities** coming soon!
 
 ## 🛠️ Step-by-Step Installation (Developer Mode)
