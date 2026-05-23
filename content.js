@@ -299,7 +299,81 @@ window.addEventListener('keydown', (e) => {
     }
 }, true);
 
-setInterval(adaugaButonSiVerificaLockdown, 1000);
+
+// NEW: STATISTICS IN PROFILE PAGE
+function injecteazaStatisticiInProfil() {
+    // 1. Rulăm doar pe profil
+    if (!window.location.href.includes('/profile/')) return;
+    if (document.getElementById('duogpt-profile-stats')) return;
+
+    // 2. Găsim elementul H2 real de pe ecran
+    let titluStatistici = null;
+    const h2Elements = document.querySelectorAll('h2');
+    for (const h2 of h2Elements) {
+        if (h2.textContent.includes('Statistici') || h2.textContent.includes('Statistics')) {
+            titluStatistici = h2;
+            break;
+        }
+    }
+    if (!titluStatistici) return;
+
+    // 3. Urcăm la părintele care ține titlul (acel <div class="_2Nu7i"> din poza ta)
+    const containerTitlu = titluStatistici.parentElement;
+    if (!containerTitlu) return;
+
+    // 4. Luăm elementul IMEDIAT URMĂTOR (acel <div class> care conține gridul _37tLJ)
+    const wrapperGrid = containerTitlu.nextElementSibling;
+    if (!wrapperGrid) return;
+
+    // 5. Generăm cardul
+    chrome.storage.local.get(["duogpt_thumbs_up", "duogpt_thumbs_down"], (data) => {
+        if (document.getElementById('duogpt-profile-stats')) return;
+
+        const ups = data.duogpt_thumbs_up || 0;
+        const downs = data.duogpt_thumbs_down || 0;
+        const total = ups + downs;
+        const acuratete = total > 0 ? Math.round((ups / total) * 100) : 100;
+
+        const cardHTML = `
+            <div id="duogpt-profile-stats" style="
+                border: 2px solid #e5e5e5;
+                border-radius: 16px;
+                padding: 16px 20px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                background: #ffffff;
+                box-shadow: 0 4px 0 #e5e5e5;
+                box-sizing: border-box;
+                min-height: 82px;
+                width: 100%;
+                margin-top: 16px;
+                clear: both;
+            ">
+                <div style="font-size: 32px; user-select: none; line-height: 1; display: flex; align-items: center;">🦉</div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex: 1;">
+                    <span style="font-size: 19px; font-weight: 800; color: #3c3c3c; line-height: 1.2;">${acuratete}%</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #afafaf; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px;">Acuracy Copilot DuoGPT</span>
+                    <div style="display: flex; gap: 12px; font-size: 12px; color: #777777; font-weight: bold; margin-top: 4px;">
+                        <span>👍 <span style="color: #58cc02;">${ups}</span></span>
+                        <span>👎 <span style="color: #ea2b2b;">${downs}</span></span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 6. Inserăm cardul nostru LA FINALUL acelui wrapper, deci fix SUB grid-ul cu cele 4 statistici!
+        wrapperGrid.insertAdjacentHTML('beforeend', cardHTML);
+        console.log("[DuoGPT Core] Card injectat cu laser, fix după arhitectura din DOM.");
+    });
+}
+
+// Modifică linia ta de final din content.js să includă și asta:
+setInterval(() => {
+    adaugaButonSiVerificaLockdown();
+    injecteazaStatisticiInProfil(); // <--- Adăugat aici ca să ruleze la fiecare secundă
+}, 1000);
+
 
 // 7. Răspuns AI + Debounce reset
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
