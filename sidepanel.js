@@ -1,4 +1,4 @@
-// sidepanel.js - DuoGPT Beta v2.3.1 - Clean Messaging Core by Mister X
+// sidepanel.js - DuoGPT Beta v2.4.1 - Clean Messaging Core by Mister X
 const chatContainer = document.getElementById('chat-container');
 const userQueryInput = document.getElementById('userQuery');
 const sendBtn = document.getElementById('sendBtn');
@@ -112,12 +112,27 @@ function appendMessage(role, content, modelName = "") {
     thumbsDown.innerHTML = "👎";
 
     thumbsUp.onclick = () => {
-      thumbsUp.classList.toggle("active-up");
+      const active = thumbsUp.classList.toggle("active-up");
       thumbsDown.classList.remove("active-down");
+      
+      // Salvare asincronă în storage
+      chrome.storage.local.get(["duogpt_thumbs_up"], (data) => {
+        let count = data.duogpt_thumbs_up || 0;
+        count = active ? count + 1 : Math.max(0, count - 1);
+        chrome.storage.local.set({ "duogpt_thumbs_up": count });
+      });
     };
+
     thumbsDown.onclick = () => {
-      thumbsDown.classList.toggle("active-down");
+      const active = thumbsDown.classList.toggle("active-down");
       thumbsUp.classList.remove("active-up");
+      
+      // Salvare asincronă în storage
+      chrome.storage.local.get(["duogpt_thumbs_down"], (data) => {
+        let count = data.duogpt_thumbs_down || 0;
+        count = active ? count + 1 : Math.max(0, count - 1);
+        chrome.storage.local.set({ "duogpt_thumbs_down": count });
+      });
     };
     actionsBar.appendChild(thumbsUp);
     actionsBar.appendChild(thumbsDown);
