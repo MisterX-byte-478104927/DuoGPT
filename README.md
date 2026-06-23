@@ -31,9 +31,7 @@
 
 * **🔊 Real-time conversations** in the Practice Hub with Gemini
 * **📝 Explained Guidebook** by Gemini
-* **📝 Special new lessons** by Gemini in the Practice Hub
-* **📝 Special AI Missions** in the Quests
-* **📝 Special Leaderboards** from your donations
+* **📝 Fixing potential bugs**
 * **📝 Native Support** — Introducing this extension in the Chrome Web Store so you no longer need to install/update manually
 * **🚀 More Functionalities** coming soon!
 
