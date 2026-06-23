@@ -1,5 +1,5 @@
-// DuoGPT Beta v2.4.1 by Mister X - DYNAMIC BACKGROUND CORE
-console.log("DuoGPT Beta v2.4.1 - Dynamic Model Routing Engine Loaded");
+// DuoGPT Beta v2.4.3 by Mister X - DYNAMIC BACKGROUND CORE
+console.log("DuoGPT Beta v2.4.3 - Dynamic Model Routing Engine Loaded");
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "ASK_AI") {
@@ -46,6 +46,7 @@ async function handleGoogleStudio(request, sender) {
     const aiText = result.candidates[0].content.parts[0].text;
 
     // Mapare curată pentru un afișaj frumos în UI-ul din sidepanel
+	let numeModelFrumos;
     if (modelSelectat === "gemini-2.5-pro")
     	numeModelFrumos = "Gemini 2.5 Pro";
     else if (modelSelectat === "gemini-2.5-flash")
