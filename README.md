@@ -24,7 +24,7 @@
 * **💬 More AI robots available** — Adding a list in the popup with several Gemini models
 * **❌ Use AI on wrong answers function** — When on, if you get wrong an exercise, you can't pass after you ask AI what's wrong and wait 5 seconds to read the explanation. *Strong recommended!* (PS Even the key `ENTER` who normally pass the exersice, when you get wrong, its function is redirected to the `EXPLAIN` button!) ![Enable function](screenshots/Capture3.JPG) ![Lockdown when wrong](screenshots/Capture4.JPG) ![Ask AI](screenshots/Capture5.JPG) ![Close Panel, and the CONTINUE button is enabled](screenshots/Capture6.JPG)
 * **₿ Donation Crypto Section** — Your support will help the extension upgrade ![Donate](screenshots/Capture7.JPG)
-* **📝 Quick Button to this repository** so you can quick rate the extension, open an Issue or a Pull Request ![Repo](screenshots/Capture8.JPG)
+* **📝 Quick Button to this repository** so you can quick rate the extension, open an Issue or a Pull Request
 * **📷 Adjusting design** — To make the extension to look more professional
 
 ### Next Steps:
