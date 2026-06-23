@@ -1,5 +1,5 @@
-// DuoGPT Beta v2.4.3 by Mister X - DYNAMIC BACKGROUND CORE
-console.log("DuoGPT Beta v2.4.3 - Dynamic Model Routing Engine Loaded");
+// DuoGPT Beta v2.4.2 by Mister X - DYNAMIC BACKGROUND CORE
+console.log("DuoGPT Beta v2.4.2 - Dynamic Model Routing Engine Loaded");
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "ASK_AI") {
