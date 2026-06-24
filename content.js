@@ -350,7 +350,7 @@ function injecteazaStatisticiInProfil() {
                 margin-top: 16px;
                 clear: both;
             ">
-                <div style="font-size: 32px; user-select: none; line-height: 1; display: flex; align-items: center;">🦉</div>
+                <div style="font-size: 32px; user-select: none; line-height: 1; display: flex; align-items: center;">🎯</div>
                 <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex: 1;">
                     <span style="font-size: 19px; font-weight: 800; color: #3c3c3c; line-height: 1.2;">${acuratete}%</span>
                     <span style="font-size: 11px; font-weight: 700; color: #afafaf; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px;">Acuracy Copilot DuoGPT</span>
