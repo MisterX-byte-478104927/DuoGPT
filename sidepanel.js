@@ -90,14 +90,42 @@ function appendMessage(role, content, modelName = "") {
         ttsBtn.innerHTML = "🔊 Listen";
         return;
       }
+      
       ttsBtn.innerHTML = "🛑 Stop";
-      const utterance = new SpeechSynthesisUtterance(content.replace(/[*#`]/g, ""));
+      const cleanText = content.replace(/[*#`]/g, ""); 
+      const utterance = new SpeechSynthesisUtterance(cleanText);
       
       chrome.storage.local.get(["userLang"], (data) => {
-        if (data.userLang === "Română") utterance.lang = "ro-RO";
-        else if (data.userLang === "English") utterance.lang = "en-US";
+        const selectieLimba = data.userLang || "Română";
         
+        // Mapare completă 1:1 pentru toate limbile din popup.js conform standardului internațional BCP 47
+        const accenteGlobale = {
+          "Afrikaans": "af-ZA", "Albanian": "sq-AL", "Amharic": "am-ET", "Arabic": "ar-SA", 
+          "Armenian": "hy-AM", "Azerbaijani": "az-AZ", "Bengali": "bn-IN", "Bosnian": "bs-BA", 
+          "Bulgarian": "bg-BG", "Catalan": "ca-ES", "Chinese": "zh-CN", "Croatian": "hr-HR", 
+          "Czech": "cs-CZ", "Danish": "da-DK", "Dutch": "nl-NL", "English": "en-US", 
+          "Estonian": "et-EE", "Finnish": "fi-FI", "French": "fr-FR", "Georgian": "ka-GE", 
+          "German": "de-DE", "Greek": "el-GR", "Gujarati": "gu-IN", "Hebrew": "he-IL", 
+          "Hindi": "hi-IN", "Hungarian": "hu-HU", "Icelandic": "is-IS", "Indonesian": "id-ID", 
+          "Italian": "it-IT", "Japanese": "ja-JP", "Javanese": "jv-ID", "Kannada": "kn-IN", 
+          "Korean": "ko-KR", "Latvian": "lv-LV", "Lithuanian": "lt-LT", "Macedonian": "mk-MK", 
+          "Malay": "ms-MY", "Malayalam": "ml-IN", "Marathi": "mr-IN", "Norwegian": "no-NO", 
+          "Persian": "fa-IR", "Polish": "pl-PL", "Portuguese": "pt-PT", "Punjabi": "pa-IN", 
+          "Română": "ro-RO", "Russian": "ru-RU", "Serbian": "sr-RS", "Slovak": "sk-SK", 
+          "Slovenian": "sl-SI", "Spanish": "es-ES", "Swahili": "sw-KE", "Swedish": "sv-SE", 
+          "Tamil": "ta-IN", "Telugu": "te-IN", "Thai": "th-TH", "Turkish": "tr-TR", 
+          "Ukrainian": "uk-UA", "Urdu": "ur-PK", "Vietnamese": "vi-VN", "Welsh": "cy-GB"
+        };
+
+        // Injectăm accentul perfect dedicat limbii alese
+        utterance.lang = accenteGlobale[selectieLimba] || "ro-RO";
+        
+        utterance.rate = 1.0;  
+        utterance.pitch = 1.0; 
+
         utterance.onend = () => { ttsBtn.innerHTML = "🔊 Listen"; };
+        utterance.onerror = () => { ttsBtn.innerHTML = "🔊 Listen"; };
+
         window.speechSynthesis.speak(utterance);
       });
     };
