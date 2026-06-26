@@ -1,4 +1,4 @@
-<img width="33" height="30" alt="image" src="https://github.com/user-attachments/assets/a46638bf-1917-4197-b3a8-1aa1f32d99f6" /># DuoGPT Beta v2.4.2 by Mister X
+# DuoGPT Beta v2.4.2 by Mister X
 🦉 DuoGPT is an advanced, ultra-optimized Chrome Extension (Manifest V3) that acts as an AI copilot for Duolingo. Features a native 3D UI button, isolated floating chat, smart toggle controls, dynamic 50+ language support, and context-aware grammar explanations powered directly by Gemini 2.5 Flash. 🚀
 
 ## ✨ Alfa Edition: Key Features
