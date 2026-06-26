@@ -1,4 +1,4 @@
-# DuoGPT Beta v2.4.2 by Mister X
+<img width="33" height="30" alt="image" src="https://github.com/user-attachments/assets/a46638bf-1917-4197-b3a8-1aa1f32d99f6" /># DuoGPT Beta v2.4.2 by Mister X
 🦉 DuoGPT is an advanced, ultra-optimized Chrome Extension (Manifest V3) that acts as an AI copilot for Duolingo. Features a native 3D UI button, isolated floating chat, smart toggle controls, dynamic 50+ language support, and context-aware grammar explanations powered directly by Gemini 2.5 Flash. 🚀
 
 ## ✨ Alfa Edition: Key Features
@@ -17,10 +17,12 @@
 * **💬 Chat Evolution:** Integrating interactive dynamic buttons for every AI response:
   1. **📋 Copy Button** — Instantly save explanations to your clipboard.
   2. **🔊 Text-to-Speech Button** — Listen to native grammar pronunciations via the browser's TTS engine.
-  3. **👍/👎 Feedback System** — Rate responses to train and refine local context prompts.
+  3. **👍/👎 Feedback System** — Rate responses so you can see the DuoGPT's accuracy.
   4. **🔄 Regenerate Button** — Re-roll the AI output on the fly for the same exercise context.
   5. **🚨 Report Button** — Streamline prompt failures and bugs directly to a dedicated Discord Webhook.
 
+* **🎯 See DuoGPT's accuracy in the Profile Section at Statistics** — Based on your rated responses
+![Accuracy](screenshots/Capture8.JPG)
 * **💬 More AI robots available** — Adding a list in the popup with several Gemini models
 * **❌ Use AI on wrong answers function** — When on, if you get wrong an exercise, you can't pass after you ask AI what's wrong and wait 5 seconds to read the explanation. *Strong recommended!* (PS Even the key `ENTER` who normally pass the exersice, when you get wrong, its function is redirected to the `EXPLAIN` button!)
 ![Enable function](screenshots/Capture3.JPG) ![Lockdown when wrong](screenshots/Capture4.JPG) ![Ask AI](screenshots/Capture5.JPG) ![Close Panel, and the CONTINUE button is enabled](screenshots/Capture6.JPG)
