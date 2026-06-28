@@ -18,7 +18,7 @@ async function handleGoogleStudio(request, sender) {
     const modelSelectat = data.geminiModel || "gemini-2.5-flash"; 
 
     if (!apiKey) {
-      chrome.tabs.sendMessage(sender.tab.id, { type: "AI_RES", content: "⚠️ Lipsește cheia API din Popup!" });
+      chrome.tabs.sendMessage(sender.tab.id, { type: "AI_RES", content: "⚠️ Missing API key in Popup!" });
       return;
     }
 
