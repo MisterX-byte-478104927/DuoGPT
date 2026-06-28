@@ -29,6 +29,10 @@
 * **₿ Donation Crypto Section** — Your support will help the extension upgrade
 ![Donate](screenshots/Capture7.JPG)
 * **📝 Quick Button to this repository** so you can quick rate the extension, open an Issue or a Pull Request
+* **📱 Full compatibility with mobile devices**
+![1](Screenshot_20260628_150434_Mises.jpg)
+![2](Screenshot_20260628_150534_Mises.jpg)
+![3](Screenshot_20260628_150545_Mises.jpg)
 * **📷 Adjusting design** — To make the extension to look more professional
 
 ### Next Steps:
